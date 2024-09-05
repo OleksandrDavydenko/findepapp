@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { auth } from '../../../firebase';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
+import { auth } from '../../../firebase'; // Переконайтеся, що імпорт правильний
 import './login.css'
 
 const Login = () => {
@@ -16,11 +16,20 @@ const Login = () => {
 
   const onSubmit = async (data) => {
     try {
-      // Виклик функції входу користувача
+      // Спроба входу користувача
       await signInWithEmailAndPassword(auth, data.email, data.password);
       navigate('/home'); // Переадресація на головну сторінку після успішного входу
     } catch (error) {
-      setErrorMessage('Невірний логін або пароль');
+      // Обробка помилок Firebase
+      if (error.code === 'auth/wrong-password') {
+        setErrorMessage('Невірний пароль');
+      } else if (error.code === 'auth/user-not-found') {
+        setErrorMessage('Користувача не знайдено');
+      } else if (error.code === 'auth/invalid-email') {
+        setErrorMessage('Невірний формат електронної пошти');
+      } else {
+        setErrorMessage('Сталася помилка: ' + error.message);
+      }
     }
   };
 
