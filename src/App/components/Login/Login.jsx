@@ -1,8 +1,9 @@
-// src/Login.js
-
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import './login.css';
+import { auth } from '../../../firebase';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { useNavigate } from 'react-router-dom';
+import './login.css'
 
 const Login = () => {
   const {
@@ -10,10 +11,17 @@ const Login = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
+  const [errorMessage, setErrorMessage] = useState('');
+  const navigate = useNavigate();
 
-  const onSubmit = (data) => {
-    console.log(data);
-    // Логіка для входу користувача, наприклад, запит до сервера
+  const onSubmit = async (data) => {
+    try {
+      // Виклик функції входу користувача
+      await signInWithEmailAndPassword(auth, data.email, data.password);
+      navigate('/home'); // Переадресація на головну сторінку після успішного входу
+    } catch (error) {
+      setErrorMessage('Невірний логін або пароль');
+    }
   };
 
   return (
@@ -39,6 +47,8 @@ const Login = () => {
           />
           {errors.password && <p className="error-message">{errors.password.message}</p>}
         </div>
+
+        {errorMessage && <p className="error-message">{errorMessage}</p>}
 
         <button type="submit">Увійти</button>
       </form>
