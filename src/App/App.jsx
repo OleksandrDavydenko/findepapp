@@ -1,7 +1,5 @@
-// src/App.js
-
 import React from 'react';
-import Login from './components/Login';
+import Login from './components/Login/Login';
 import './App.css';
 
 const App = () => {
