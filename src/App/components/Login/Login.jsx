@@ -59,7 +59,7 @@ const Login = () => {
 
         {errorMessage && <p className="error-message">{errorMessage}</p>}
 
-        <button type="submit">Увійти</button>
+        <button className="button-login" type="submit">Увійти</button>
       </form>
     </div>
   );

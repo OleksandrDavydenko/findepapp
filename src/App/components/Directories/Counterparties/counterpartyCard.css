@@ -1,0 +1,52 @@
+/* src/components/Directories/counterpartyCard.css */
+
+.counterparty-card-container {
+  padding: 20px;
+}
+
+.counterparty-form {
+  display: flex;
+  flex-direction: column;
+  max-width: 400px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.form-group input {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.actions {
+  margin-top: 20px;
+}
+
+.actions button {
+  margin-right: 10px;
+  padding: 8px 16px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.actions button:hover {
+  background-color: #0056b3;
+}
+
+.actions button[type="button"] {
+  background-color: #ff4d4d;
+}
+
+.actions button[type="button"]:hover {
+  background-color: #cc0000;
+}

@@ -1,3 +1,10 @@
+/* src/components/Home/home.css */
+
+.home-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
 
 .header {
   background-color: #f5f5f5;
@@ -13,13 +20,14 @@
   align-items: center;
 }
 
-.header-content span {
-  margin-right: 15px;
+.user-info {
+  margin-right: 20px;
   font-weight: bold;
 }
 
 .logout-button {
-  background-color: #007bff;
+  width: 35%;
+  background-color: #ff4d4d;
   color: white;
   border: none;
   padding: 8px 16px;
@@ -28,5 +36,37 @@
 }
 
 .logout-button:hover {
-  background-color: #0056b3;
+  background-color: #cc0000;
+}
+
+.main-content {
+  display: flex;
+  flex: 1;
+}
+
+.sidebar {
+  width: 200px;
+  background-color: #333;
+  color: white;
+  padding: 15px;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar ul li {
+  padding: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.sidebar ul li:hover {
+  background-color: #444;
+}
+
+.content {
+  flex: 1;
+  padding: 20px;
 }

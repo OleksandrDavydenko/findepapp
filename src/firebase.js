@@ -1,5 +1,6 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
+import { getFirestore } from 'firebase/firestore'; // Додаємо імпорт Firestore
 
 const firebaseConfig = {
     apiKey: "AIzaSyBcsxkjcW3xvSnTJBMqUrKuZu8tTupIynI",
@@ -13,5 +14,6 @@ const firebaseConfig = {
 // Ініціалізація Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+const db = getFirestore(app); // Ініціалізуємо Firestore
 
-export { auth };
+export { auth, db }; // Одна експортна операція для обох

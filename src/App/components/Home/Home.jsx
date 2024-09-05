@@ -1,17 +1,18 @@
-// src/Home.js
+// src/components/Home/Home.js
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAuth } from '../../../AuthContext';
-import { useNavigate } from 'react-router-dom';
-import './home.css' //s
-
+import Issuance from '../Issuance/Issuance';
+import Recalculation from '../Recalculation/Recalculation';
+import Reporting from '../Reporting/Reporting';
+import Directories from '../Directories/Directories'; // Імпортуємо новий компонент "Довідники"
+import './home.css'; // Додаємо файл стилів для цього компонента
 
 const Home = () => {
   const { currentUser, logout } = useAuth();
-  const navigate = useNavigate();
+  const [selectedComponent, setSelectedComponent] = useState('Issuance');
 
   useEffect(() => {
-    // Забороняємо повернення на попередню сторінку
     window.history.pushState(null, document.title, window.location.href);
     window.addEventListener('popstate', handleBackButton);
 
@@ -25,20 +26,44 @@ const Home = () => {
     window.history.pushState(null, document.title, window.location.href);
   };
 
+  const renderComponent = () => {
+    switch (selectedComponent) {
+      case 'Issuance':
+        return <Issuance />;
+      case 'Recalculation':
+        return <Recalculation />;
+      case 'Reporting':
+        return <Reporting />;
+      case 'Directories': // Додаємо кейс для "Довідники"
+        return <Directories />;
+      default:
+        return <Issuance />;
+    }
+  };
+
   return (
-    <div>
+    <div className="home-container">
       <header className="header">
         <div className="header-content">
-          <span>Логін: {currentUser?.email}</span>
+          <span className="user-info"> {currentUser?.email}</span>
           <button onClick={logout} className="logout-button">
             Вийти
           </button>
         </div>
       </header>
-      <main>
-        <h1>Головна сторінка</h1>
-        <p>Вітаємо на головній сторінці!</p>
-      </main>
+      <div className="main-content">
+        <nav className="sidebar">
+          <ul>
+            <li onClick={() => setSelectedComponent('Issuance')}>Видача</li>
+            <li onClick={() => setSelectedComponent('Recalculation')}>Перерахування</li>
+            <li onClick={() => setSelectedComponent('Reporting')}>Звітність</li>
+            <li onClick={() => setSelectedComponent('Directories')}>Довідники</li> {/* Додаємо пункт "Довідники" */}
+          </ul>
+        </nav>
+        <div className="content">
+          {renderComponent()}
+        </div>
+      </div>
     </div>
   );
 };
