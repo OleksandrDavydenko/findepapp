@@ -19,10 +19,18 @@
   font-weight: bold;
 }
 
-.form-group input {
+.form-group input,
+.form-group select,
+.form-group textarea {
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 5px;
+  width: 100%;
+}
+
+.form-group .number-input {
+  background-color: #f0f0f0; /* Сірий фон для неактивного поля */
+  color: #888; /* Сірий колір тексту */
 }
 
 .actions {
@@ -49,4 +57,10 @@
 
 .actions button[type="button"]:hover {
   background-color: #cc0000;
+}
+
+.error {
+  color: red;
+  font-size: 12px;
+  margin-top: 5px;
 }

@@ -1,57 +1,75 @@
 /* src/components/Directories/counterparties.css */
 
 .counterparties-container {
-    padding: 20px;
-  }
-  
-  .actions {
-    margin-bottom: 10px;
-  }
-  
-  .actions button {
-    margin-right: 10px;
-  }
-  
-  /* Стиль для поля пошуку */
-  .search-input {
-    padding: 8px;
-    width: 100%;
-    max-width: 300px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
-  
-  .table-container {
-    max-height: 300px; /* Фіксована висота для таблиці */
-    overflow-y: auto; /* Додаємо вертикальну прокрутку */
-    border: 1px solid #ddd;
-  }
-  
-  .counterparties-table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-  
-  .counterparties-table th, .counterparties-table td {
-    padding: 10px;
-    border: 1px solid #ddd;
-  }
-  
-  /* Зміна курсора при наведенні на рядок контрагента */
-  .counterparties-table tr {
-    cursor: pointer;
-    transition: background-color 0.3s ease; /* Плавний перехід при зміні фону */
-  }
-  
-  /* Стиль при наведенні на контрагента */
-  .counterparties-table tr:hover {
-    background-color: #e0f7fa; /* Блакитний фон при наведенні */
-  }
-  
-  /* Виділення активного контрагента */
-  .counterparties-table tr.selected {
-    background-color: #4fc3f7; /* Більш яскравий блакитний фон */
-    color: white; /* Зміна кольору тексту для контрасту */
-  }
-  
+  padding: 10px;
+  height: calc(100vh - 150px); /* Враховуємо висоту хедера */
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+.actions {
+  margin-bottom: 10px;
+}
+
+.actions button {
+  margin-right: 10px;
+}
+
+.search-input {
+  padding: 8px;
+  width: 100%;
+  max-width: 300px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.table-container {
+  flex-grow: 1;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  position: relative; /* Щоб шапка таблиці не виходила за межі */
+}
+
+.counterparties-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.counterparties-table th, .counterparties-table td {
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+
+/* Закріплюємо шапку таблиці і змінюємо її колір */
+.counterparties-table th {
+  position: sticky;
+  top: 0; /* Закріплюємо шапку зверху */
+  background-color: #333; /* Колір фону */
+  color: #fff; /* Колір тексту */
+  z-index: 2; /* Піднімаємо шапку над іншими елементами */
+  font-weight: bold;
+  text-align: left;
+  padding-right: 20px;
+  margin: 0; /* Забезпечуємо, що немає зовнішніх відступів */
+  border-top: 0; /* Прибираємо верхню межу, щоб не створювати зайвий відступ */
+}
+
+/* Для виділеного рядка */
+.counterparties-table tr.selected {
+  background-color: #4fc3f7;
+  color: white;
+  cursor: pointer; /* Зберігаємо курсор pointer для виділених елементів */
+}
+
+/* Ефект hover не діє на виділені рядки */
+.counterparties-table tr:not(.selected):hover {
+  background-color: #e0f7fa;
+  cursor: pointer; /* Зміна курсору при наведенні */
+}
+
+/* Індикація при наведенні на шапку */
+.counterparties-table th:hover {
+  background-color: #444; /* Зміна фону при наведенні */
+}
