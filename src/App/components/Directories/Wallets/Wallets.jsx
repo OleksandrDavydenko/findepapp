@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { collection, addDoc, getDocs, updateDoc, deleteDoc, doc } from 'firebase/firestore';
 import { db } from '../../../../firebase'; // Імпортуємо Firestore
 import WalletCard from './WalletCard'; // Імпортуємо компонент "Картка гаманця"
-import './wallets.css'; // Стилі для сторінки гаманців
+import '../../Lists/lists.css'; // Стилі для сторінки гаманців
 
 const Wallets = () => {
   const [selectedWallet, setSelectedWallet] = useState(null);
@@ -118,7 +118,7 @@ const Wallets = () => {
   }
 
   return (
-    <div className="wallets-container">
+    <div className="list-container">
       <h2>Гаманці</h2>
       <input
         type="text"
@@ -133,7 +133,7 @@ const Wallets = () => {
         <button onClick={handleDelete} disabled={!selectedWallet}>Видалити</button>
       </div>
       <div className="table-container">
-        <table className="wallets-table">
+        <table className="list-table">
           <thead>
             <tr>
               <th onClick={() => handleSort('number')}>Номер {sortConfig.key === 'number' ? (sortConfig.direction === 'asc' ? '▲' : '▼') : ''}</th>

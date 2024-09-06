@@ -1,0 +1,71 @@
+/* src/components/Lists/lists.css */
+
+.list-container {
+  padding: 10px;
+  height: calc(100vh - 150px); /* Враховуємо висоту хедера */
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+.actions {
+  margin-bottom: 10px;
+}
+
+.actions button {
+  margin-right: 10px;
+}
+
+.search-input {
+  padding: 8px;
+  width: 100%;
+  max-width: 300px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.table-container {
+  flex-grow: 1;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  position: relative;
+}
+
+.list-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.list-table th, .list-table td {
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+
+.list-table th {
+  position: sticky;
+  top: 0;
+  background-color: #333;
+  color: #fff;
+  z-index: 2;
+  font-weight: bold;
+  text-align: left;
+  padding-right: 20px;
+  margin: 0;
+  border-top: 0;
+}
+
+.list-table tr.selected {
+  background-color: #4fc3f7;
+  color: white;
+  cursor: pointer;
+}
+
+.list-table tr:not(.selected):hover {
+  background-color: #e0f7fa;
+  cursor: pointer;
+}
+
+.list-table th:hover {
+  background-color: #444;
+}

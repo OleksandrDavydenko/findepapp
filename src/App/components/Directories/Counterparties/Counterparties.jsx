@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { collection, addDoc, getDocs, updateDoc, deleteDoc, doc } from 'firebase/firestore';
 import { db } from '../../../../firebase'; // Імпортуємо Firestore
 import CounterpartyCard from './CounterpartyCard'; // Імпортуємо компонент "Картка контрагента"
-import './counterparties.css'; // Підключаємо стилі для даної сторінки
+import '../../Lists/lists.css'; // Спільні стилі для сторінки контрагентів
 
 const Counterparties = () => {
   const [selectedCounterparty, setSelectedCounterparty] = useState(null);
@@ -11,7 +11,6 @@ const Counterparties = () => {
   const [isAdding, setIsAdding] = useState(false);
   const [sortConfig, setSortConfig] = useState({ key: 'name', direction: 'asc' });
 
-  // Завантажуємо контрагентів з Firebase при завантаженні компонента
   useEffect(() => {
     const fetchCounterparties = async () => {
       const querySnapshot = await getDocs(collection(db, 'counterparties'));
@@ -36,7 +35,6 @@ const Counterparties = () => {
     return 0;
   });
 
-  // Обробник натискання на колонку
   const handleSort = (key) => {
     let direction = 'asc';
     if (sortConfig.key === key && sortConfig.direction === 'asc') {
@@ -125,7 +123,7 @@ const Counterparties = () => {
   }
 
   return (
-    <div className="counterparties-container">
+    <div className="list-container">
       <h2>Контрагенти</h2>
       <input
         type="text"
@@ -140,12 +138,13 @@ const Counterparties = () => {
         <button onClick={handleDelete} disabled={!selectedCounterparty}>Видалити</button>
       </div>
       <div className="table-container">
-        <table className="counterparties-table">
+        <table className="list-table">
           <thead>
             <tr>
-              <th onClick={() => handleSort('number')}>Номер {sortConfig.key === 'number' ? (sortConfig.direction === 'asc' ? '▲' : '▼') : ''}</th> {/* Додаємо можливість сортування */}
+              <th onClick={() => handleSort('number')}>Номер {sortConfig.key === 'number' ? (sortConfig.direction === 'asc' ? '▲' : '▼') : ''}</th>
               <th onClick={() => handleSort('name')}>Назва {sortConfig.key === 'name' ? (sortConfig.direction === 'asc' ? '▲' : '▼') : ''}</th>
               <th onClick={() => handleSort('code')}>Код ЄДРПОУ {sortConfig.key === 'code' ? (sortConfig.direction === 'asc' ? '▲' : '▼') : ''}</th>
+              <th onClick={() => handleSort('residentStatus')}>Резидент {sortConfig.key === 'residentStatus' ? (sortConfig.direction === 'asc' ? '▲' : '▼') : ''}</th>
               <th onClick={() => handleSort('comment')}>Коментар {sortConfig.key === 'comment' ? (sortConfig.direction === 'asc' ? '▲' : '▼') : ''}</th>
             </tr>
           </thead>
@@ -157,9 +156,10 @@ const Counterparties = () => {
                 onClick={() => handleRowClick(counterparty)} // Виділення рядка при кліку
                 onDoubleClick={() => handleRowDoubleClick(counterparty)} // Подвійний клік для редагування
               >
-                <td>{counterparty.number}</td> {/* Виводимо номер */}
+                <td>{counterparty.number}</td>
                 <td>{counterparty.name}</td>
                 <td>{counterparty.code}</td>
+                <td>{counterparty.residentStatus}</td>
                 <td>{counterparty.comment}</td>
               </tr>
             ))}

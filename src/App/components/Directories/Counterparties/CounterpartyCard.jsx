@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import './counterpartyCard.css'; // Підключаємо стилі для цього компонента
 import { getNextCounterpartyNumber } from '../../../services/counterpartiesNumeric'; // Імпорт функції з Firestore
+import './counterpartyCard.css'; // Стилі для картки контрагента
 
 const CounterpartyCard = ({ counterparty, onSave, onCancel }) => {
   const {
@@ -14,7 +14,6 @@ const CounterpartyCard = ({ counterparty, onSave, onCancel }) => {
 
   useEffect(() => {
     if (counterparty) {
-      // Якщо ми редагуємо контрагента, встановлюємо значення полів
       setValue('number', counterparty.number);
       setValue('name', counterparty.name);
       setValue('code', counterparty.code);
@@ -31,16 +30,14 @@ const CounterpartyCard = ({ counterparty, onSave, onCancel }) => {
   }, [counterparty, setValue]);
 
   const onSubmit = async (data) => {
-    // Якщо контрагент новий (немає поля number), генеруємо номер
     let number = getValues('number');
     
     if (!number) {
       number = await getNextCounterpartyNumber(); // Генеруємо новий номер
     }
 
-    // Викликаємо функцію onSave з новими даними контрагента
     onSave({
-      number, // Встановлюємо згенерований або наявний номер
+      number,
       name: data.name,
       code: data.code,
       residentStatus: data.residentStatus,
@@ -59,7 +56,7 @@ const CounterpartyCard = ({ counterparty, onSave, onCancel }) => {
             type="text"
             {...register('number')}
             readOnly
-            className="number-input" // Стилізуємо як сіре поле
+            className="number-input"
           />
         </div>
         <div className="form-group">
