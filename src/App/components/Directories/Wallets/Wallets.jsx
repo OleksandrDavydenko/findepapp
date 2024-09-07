@@ -4,7 +4,7 @@ import { db } from '../../../../firebase'; // Імпортуємо Firestore
 import WalletCard from './WalletCard'; // Імпортуємо компонент "Картка гаманця"
 import '../../Lists/lists.css'; // Стилі для сторінки гаманців
 
-const Wallets = () => {
+const Wallets = ({ goBack }) => {
   const [selectedWallet, setSelectedWallet] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [wallets, setWallets] = useState([]);
@@ -23,17 +23,6 @@ const Wallets = () => {
 
     fetchWallets();
   }, []);
-
-  // Обробник сортування
-  const sortedWallets = [...wallets].sort((a, b) => {
-    if (a[sortConfig.key] < b[sortConfig.key]) {
-      return sortConfig.direction === 'asc' ? -1 : 1;
-    }
-    if (a[sortConfig.key] > b[sortConfig.key]) {
-      return sortConfig.direction === 'asc' ? 1 : -1;
-    }
-    return 0;
-  });
 
   const handleSort = (key) => {
     let direction = 'asc';
@@ -103,7 +92,7 @@ const Wallets = () => {
     setIsAdding(true); // Перехід до редагування
   };
 
-  const filteredWallets = sortedWallets.filter(wallet =>
+  const filteredWallets = wallets.filter(wallet =>
     wallet.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
@@ -120,6 +109,7 @@ const Wallets = () => {
   return (
     <div className="list-container">
       <h2>Гаманці</h2>
+      <button onClick={goBack} className="back-button">Назад</button> {/* Додаємо кнопку "Назад" */}
       <input
         type="text"
         placeholder="Пошук по назві..."

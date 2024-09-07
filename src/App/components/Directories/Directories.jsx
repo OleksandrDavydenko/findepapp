@@ -1,5 +1,3 @@
-// src/components/Directories/Directories.js
-
 import React, { useState } from 'react';
 import Currencies from './Currencies/Currencies';
 import Counterparties from './Counterparties/Counterparties';
@@ -14,14 +12,14 @@ const Directories = () => {
       case 'Currencies':
         return <Currencies />;
       case 'Counterparties':
-        return <Counterparties />;
+        return <Counterparties goBack={() => setSelectedDirectory(null)} />;
       case 'Wallets':
-        return <Wallets />;
+        return <Wallets goBack={() => setSelectedDirectory(null)} />; {/* Додаємо goBack */}
       default:
         return (
           <div>
             <h2>Довідники</h2>
-            <ul className="directories-list"> {/* Додаємо клас directories-list */}
+            <ul className="directories-list">
               <li onClick={() => setSelectedDirectory('Currencies')}>Валюти</li>
               <li onClick={() => setSelectedDirectory('Counterparties')}>Контрагенти</li>
               <li onClick={() => setSelectedDirectory('Wallets')}>Гаманці</li>
@@ -33,11 +31,6 @@ const Directories = () => {
 
   return (
     <div className="directories-container">
-      {selectedDirectory && (
-        <button onClick={() => setSelectedDirectory(null)} className="back-button">
-          Назад
-        </button>
-      )}
       {renderDirectoryContent()}
     </div>
   );

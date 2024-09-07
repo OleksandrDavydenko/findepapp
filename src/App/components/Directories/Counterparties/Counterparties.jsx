@@ -1,10 +1,12 @@
+// src/components/Directories/Counterparties/Counterparties.js
+
 import React, { useState, useEffect } from 'react';
 import { collection, addDoc, getDocs, updateDoc, deleteDoc, doc } from 'firebase/firestore';
 import { db } from '../../../../firebase'; // Імпортуємо Firestore
 import CounterpartyCard from './CounterpartyCard'; // Імпортуємо компонент "Картка контрагента"
 import '../../Lists/lists.css'; // Спільні стилі для сторінки контрагентів
 
-const Counterparties = () => {
+const Counterparties = ({ goBack }) => {
   const [selectedCounterparty, setSelectedCounterparty] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [counterparties, setCounterparties] = useState([]);
@@ -23,17 +25,6 @@ const Counterparties = () => {
 
     fetchCounterparties();
   }, []);
-
-  // Сортування контрагентів
-  const sortedCounterparties = [...counterparties].sort((a, b) => {
-    if (a[sortConfig.key] < b[sortConfig.key]) {
-      return sortConfig.direction === 'asc' ? -1 : 1;
-    }
-    if (a[sortConfig.key] > b[sortConfig.key]) {
-      return sortConfig.direction === 'asc' ? 1 : -1;
-    }
-    return 0;
-  });
 
   const handleSort = (key) => {
     let direction = 'asc';
@@ -76,7 +67,6 @@ const Counterparties = () => {
         comment: newCounterparty.comment,
       });
 
-      // Оновлюємо контрагента в списку після оновлення в Firebase
       setCounterparties(prevCounterparties =>
         prevCounterparties.map(c =>
           c.id === selectedCounterparty.id ? { ...c, ...newCounterparty } : c
@@ -100,15 +90,15 @@ const Counterparties = () => {
   };
 
   const handleRowClick = (counterparty) => {
-    setSelectedCounterparty(counterparty); // Вибираємо контрагента для виділення
+    setSelectedCounterparty(counterparty);
   };
 
   const handleRowDoubleClick = (counterparty) => {
     setSelectedCounterparty(counterparty);
-    setIsAdding(true); // Перехід до редагування
+    setIsAdding(true);
   };
 
-  const filteredCounterparties = sortedCounterparties.filter(counterparty =>
+  const filteredCounterparties = counterparties.filter(counterparty =>
     counterparty.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
@@ -125,6 +115,7 @@ const Counterparties = () => {
   return (
     <div className="list-container">
       <h2>Контрагенти</h2>
+      <button onClick={goBack} className="back-button">Назад</button> {/* Додаємо кнопку "Назад" */}
       <input
         type="text"
         placeholder="Пошук по назві..."
@@ -153,8 +144,8 @@ const Counterparties = () => {
               <tr
                 key={counterparty.id}
                 className={selectedCounterparty && selectedCounterparty.id === counterparty.id ? 'selected' : ''}
-                onClick={() => handleRowClick(counterparty)} // Виділення рядка при кліку
-                onDoubleClick={() => handleRowDoubleClick(counterparty)} // Подвійний клік для редагування
+                onClick={() => handleRowClick(counterparty)}
+                onDoubleClick={() => handleRowDoubleClick(counterparty)}
               >
                 <td>{counterparty.number}</td>
                 <td>{counterparty.name}</td>

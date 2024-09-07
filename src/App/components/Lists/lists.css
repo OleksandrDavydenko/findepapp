@@ -69,3 +69,29 @@
 .list-table th:hover {
   background-color: #444;
 }
+
+
+
+
+/* Стилі для кнопок */
+.actions button {
+  padding: 8px 16px;
+  margin-right: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: #007bff;
+  color: white;
+}
+
+.actions button:hover {
+  background-color: #0056b3;
+}
+
+/* Стилі для неактивних кнопок */
+.actions button:disabled, 
+.disabled-button {
+  background-color: #ccc;
+  color: #666;
+  cursor: not-allowed;
+}
