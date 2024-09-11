@@ -24,6 +24,7 @@ const Wallets = ({ goBack }) => {
     fetchWallets();
   }, []);
 
+  // Функція для зміни сортування
   const handleSort = (key) => {
     let direction = 'asc';
     if (sortConfig.key === key && sortConfig.direction === 'asc') {
@@ -31,6 +32,17 @@ const Wallets = ({ goBack }) => {
     }
     setSortConfig({ key, direction });
   };
+
+  // Сортування гаманців
+  const sortedWallets = [...wallets].sort((a, b) => {
+    if (a[sortConfig.key] < b[sortConfig.key]) {
+      return sortConfig.direction === 'asc' ? -1 : 1;
+    }
+    if (a[sortConfig.key] > b[sortConfig.key]) {
+      return sortConfig.direction === 'asc' ? 1 : -1;
+    }
+    return 0;
+  });
 
   const handleAdd = () => {
     setIsAdding(true);
@@ -92,7 +104,8 @@ const Wallets = ({ goBack }) => {
     setIsAdding(true); // Перехід до редагування
   };
 
-  const filteredWallets = wallets.filter(wallet =>
+  // Фільтрація гаманців
+  const filteredWallets = sortedWallets.filter(wallet =>
     wallet.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
@@ -109,7 +122,7 @@ const Wallets = ({ goBack }) => {
   return (
     <div className="list-container">
       <h2>Гаманці</h2>
-      <button onClick={goBack} className="back-button">Назад</button> {/* Додаємо кнопку "Назад" */}
+      <button onClick={goBack} className="back-button">Назад</button>
       <input
         type="text"
         placeholder="Пошук по назві..."

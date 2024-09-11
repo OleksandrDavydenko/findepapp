@@ -2,8 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '../../../AuthContext';
-import Issuance from '../Issuance/Issuance';
-import Recalculation from '../Recalculation/Recalculation';
+import Documents from '../Documents/Documents';
 import Reporting from '../Reporting/Reporting';
 import Directories from '../Directories/Directories'; // Імпортуємо новий компонент "Довідники"
 import './home.css'; // Додаємо файл стилів для цього компонента
@@ -28,8 +27,8 @@ const Home = () => {
 
   const renderComponent = () => {
     switch (selectedComponent) {
-      case 'Issuance':
-        return <Issuance />;
+      case 'Documents':
+        return <Documents />;
       case 'Recalculation':
         return <Recalculation />;
       case 'Reporting':
@@ -37,7 +36,7 @@ const Home = () => {
       case 'Directories': // Додаємо кейс для "Довідники"
         return <Directories />;
       default:
-        return <Issuance />;
+        return <Documents />;
     }
   };
 
@@ -54,8 +53,7 @@ const Home = () => {
       <div className="main-content">
         <nav className="sidebar">
           <ul>
-            <li onClick={() => setSelectedComponent('Issuance')}>Видача</li>
-            <li onClick={() => setSelectedComponent('Recalculation')}>Перерахування</li>
+            <li onClick={() => setSelectedComponent('Issuance')}>Документи</li>
             <li onClick={() => setSelectedComponent('Reporting')}>Звітність</li>
             <li onClick={() => setSelectedComponent('Directories')}>Довідники</li> {/* Додаємо пункт "Довідники" */}
           </ul>

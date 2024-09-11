@@ -1,5 +1,3 @@
-// src/components/Directories/Counterparties/Counterparties.js
-
 import React, { useState, useEffect } from 'react';
 import { collection, addDoc, getDocs, updateDoc, deleteDoc, doc } from 'firebase/firestore';
 import { db } from '../../../../firebase'; // Імпортуємо Firestore
@@ -26,6 +24,7 @@ const Counterparties = ({ goBack }) => {
     fetchCounterparties();
   }, []);
 
+  // Функція для зміни сортування
   const handleSort = (key) => {
     let direction = 'asc';
     if (sortConfig.key === key && sortConfig.direction === 'asc') {
@@ -33,6 +32,17 @@ const Counterparties = ({ goBack }) => {
     }
     setSortConfig({ key, direction });
   };
+
+  // Сортуємо контрагентів відповідно до налаштувань сортування
+  const sortedCounterparties = [...counterparties].sort((a, b) => {
+    if (a[sortConfig.key] < b[sortConfig.key]) {
+      return sortConfig.direction === 'asc' ? -1 : 1;
+    }
+    if (a[sortConfig.key] > b[sortConfig.key]) {
+      return sortConfig.direction === 'asc' ? 1 : -1;
+    }
+    return 0;
+  });
 
   const handleAdd = () => {
     setIsAdding(true);
@@ -98,7 +108,8 @@ const Counterparties = ({ goBack }) => {
     setIsAdding(true);
   };
 
-  const filteredCounterparties = counterparties.filter(counterparty =>
+  // Фільтрація контрагентів
+  const filteredCounterparties = sortedCounterparties.filter(counterparty =>
     counterparty.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
@@ -115,7 +126,7 @@ const Counterparties = ({ goBack }) => {
   return (
     <div className="list-container">
       <h2>Контрагенти</h2>
-      <button onClick={goBack} className="back-button">Назад</button> {/* Додаємо кнопку "Назад" */}
+      <button onClick={goBack} className="back-button">Назад</button>
       <input
         type="text"
         placeholder="Пошук по назві..."

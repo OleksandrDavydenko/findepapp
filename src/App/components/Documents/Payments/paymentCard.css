@@ -1,0 +1,51 @@
+.payment-card-container {
+  padding: 20px;
+  max-width: 700px;
+  margin: 0 auto;
+  background-color: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+
+.payment-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+.form-group label {
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.form-group input,
+.form-group select {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+.actions {
+  grid-column: span 2;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.actions button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.actions button[type="submit"] {
+  background-color: #28a745;
+  color: #fff;
+}
+
+.actions button[type="button"] {
+  background-color: #dc3545;
+  color: #fff;
+}

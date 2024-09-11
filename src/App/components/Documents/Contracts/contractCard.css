@@ -1,0 +1,102 @@
+.contract-card-container {
+  padding: 20px;
+  height: calc(100vh - 180px); /* Висота сторінки без смуги прокрутки */
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; /* Заборона появи прокрутки */
+}
+
+.contract-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-horizontal-group {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.actions {
+  margin-top: 20px;
+}
+
+.divider {
+  border: none;
+  height: 2px;
+  background-color: #333;
+  margin: 20px 0;
+}
+
+.payments-section {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  overflow: hidden; /* Заборона прокрутки для таблиць */
+  flex-grow: 1; /* Займає доступний простір */
+}
+
+.payments-left, .payments-right {
+  width: 48%;
+  overflow-y: auto; /* Якщо багато рядків, додати прокрутку тільки для таблиці */
+}
+
+.payments-table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #ddd;
+}
+
+.payments-table th, .payments-table td {
+  padding: 5px; /* Зменшено padding для зменшення висоти рядків */
+  border: 1px solid #ddd;
+  font-size: 14px; /* Зменшено розмір шрифту для компактнішого вигляду */
+}
+
+.payments-table th {
+  background-color: #333;
+  color: #fff;
+  padding: 6px; /* Трохи більший padding для заголовків таблиць */
+}
+
+.payments-table tr.selected {
+  background-color: #4fc3f7;
+  color: white;
+}
+
+.payments-table tr:hover {
+  background-color: #e0f7fa; /* Змініть колір фону для чіткого контрасту */
+  color: black; /* Переконайтеся, що колір тексту залишається читабельним */
+  cursor: pointer;
+}
+
+.payment-actions {
+  display: flex;
+  justify-content: flex-start;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.payment-actions button {
+  padding: 8px 12px;
+  background-color: #007bff;
+  border: none;
+  color: white;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.payment-actions button:hover {
+  background-color: #0056b3;
+}
+
+.payment-actions button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
