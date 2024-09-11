@@ -6,6 +6,22 @@
   overflow: hidden; /* Заборона появи прокрутки */
 }
 
+.contract-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.contract-header h3 {
+  margin: 0;
+}
+
+.contract-number {
+  color: gray;
+  font-size: 1rem;
+}
+
 .contract-form {
   display: flex;
   flex-direction: column;
@@ -15,16 +31,26 @@
   display: flex;
   justify-content: space-between;
   gap: 20px;
+  margin-bottom: 15px;
 }
 
 .form-group {
   display: flex;
   flex-direction: column;
-  width: 100%;
+  /* Видалено width: 100%; для гнучкого розміщення */
+  flex: 1;
+  min-width: 150px; /* Мінімальна ширина для кращого відображення */
+}
+
+.form-group label {
+  margin-bottom: 5px;
+  font-weight: bold;
 }
 
 .actions {
   margin-top: 20px;
+  display: flex;
+  gap: 10px;
 }
 
 .divider {
@@ -100,3 +126,54 @@
   background-color: #cccccc;
   cursor: not-allowed;
 }
+
+/* Додаткові стилі для розміщення реквізитів в одному рядку */
+.additional-requisites .form-group {
+  flex: 1;
+  min-width: 120px; /* Можна зменшити для кращої відповідності */
+}
+
+/* Медіа-запити для адаптивності */
+@media (max-width: 1200px) {
+  .additional-requisites .form-group {
+    min-width: 100px;
+  }
+}
+
+@media (max-width: 800px) {
+  .contract-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .contract-number {
+    margin-top: 10px;
+  }
+
+  .form-horizontal-group {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .additional-requisites .form-group {
+    min-width: 100%;
+  }
+
+  .payments-section {
+    flex-direction: column;
+  }
+
+  .payments-left, .payments-right {
+    width: 100%;
+  }
+}
+
+
+.highlighted input {
+  background-color: lightgreen;
+}
+
+input[disabled] {
+  background-color: #f0f0f0;
+}
+

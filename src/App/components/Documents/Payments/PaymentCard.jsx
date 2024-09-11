@@ -25,6 +25,8 @@ const PaymentCard = ({ payment, onSave, onCancel }) => {
         setValue('direction', payment.direction);
         setValue('amount', payment.amount);
         setValue('currency', payment.currency);
+        setValue('commissionGross', payment.commissionGross || 0);
+        setValue('commissionNet', payment.commissionNet || 0);
         setContractId(payment.contractId);
         setSelectedContract(payment.contractNumber);
         setSelectedCounterparty(payment.counterparty);
@@ -47,6 +49,8 @@ const PaymentCard = ({ payment, onSave, onCancel }) => {
       contractId: contractId, // Зберігаємо ID контракту
       contractNumber: selectedContract, // Зберігаємо номер контракту
       wallet: selectedWallet, // Зберігаємо вибраний гаманець
+      commissionNet: parseFloat(data.commissionNet), // Комісія нето
+      commissionGross: parseFloat(data.commissionGross), // Комісія бруто
     });
   };
 
@@ -153,6 +157,27 @@ const PaymentCard = ({ payment, onSave, onCancel }) => {
             />
           </div>
         </div>
+
+        {/* Додаємо поля для Комісія нето і Комісія бруто */}
+        <div className="form-horizontal-group">
+          <div className="form-group">
+            <label>Комісія нето:</label>
+            <input
+              type="number"
+              {...register('commissionNet', { required: true })}
+              defaultValue={payment?.commissionNet || 0}
+            />
+          </div>
+          <div className="form-group">
+            <label>Комісія бруто:</label>
+            <input
+              type="number"
+              {...register('commissionGross', { required: true })}
+              defaultValue={payment?.commissionGross || 0}
+            />
+          </div>
+        </div>
+
         <div className="actions">
           <button type="submit">Зберегти</button>
           <button type="button" onClick={onCancel}>Скасувати</button>

@@ -76,6 +76,8 @@ const Payments = ({ goBack }) => {
         amount: newPayment.amount,
         currency: newPayment.currency,
         contractNumber: newPayment.contractNumber,
+        commissionNet: newPayment.commissionNet, // Додаємо Комісію нето
+        commissionGross: newPayment.commissionGross, // Додаємо Комісію бруто
       });
 
       setPayments(prevPayments =>
@@ -93,6 +95,8 @@ const Payments = ({ goBack }) => {
         amount: newPayment.amount,
         currency: newPayment.currency,
         contractNumber: newPayment.contractNumber,
+        commissionNet: newPayment.commissionNet, // Додаємо Комісію нето
+        commissionGross: newPayment.commissionGross, // Додаємо Комісію бруто
       });
       setPayments([...payments, { id: docRef.id, ...newPayment }]);
     }
@@ -154,6 +158,9 @@ const Payments = ({ goBack }) => {
               <th onClick={() => handleSort('amount')}>Сума {sortConfig.key === 'amount' ? (sortConfig.direction === 'asc' ? '▲' : '▼') : ''}</th>
               <th onClick={() => handleSort('currency')}>Валюта {sortConfig.key === 'currency' ? (sortConfig.direction === 'asc' ? '▲' : '▼') : ''}</th>
               <th onClick={() => handleSort('contractNumber')}>Номер угоди {sortConfig.key === 'contractNumber' ? (sortConfig.direction === 'asc' ? '▲' : '▼') : ''}</th>
+              {/* Додаємо колонки для Комісії нето та Комісії бруто */}
+              <th onClick={() => handleSort('commissionNet')}>Комісія нето {sortConfig.key === 'commissionNet' ? (sortConfig.direction === 'asc' ? '▲' : '▼') : ''}</th>
+              <th onClick={() => handleSort('commissionGross')}>Комісія бруто {sortConfig.key === 'commissionGross' ? (sortConfig.direction === 'asc' ? '▲' : '▼') : ''}</th>
             </tr>
           </thead>
           <tbody>
@@ -172,6 +179,8 @@ const Payments = ({ goBack }) => {
                 <td>{payment.amount}</td>
                 <td>{payment.currency}</td>
                 <td>{payment.contractNumber}</td>
+                <td>{payment.commissionNet}</td> {/* Відображаємо Комісію нето */}
+                <td>{payment.commissionGross}</td> {/* Відображаємо Комісію бруто */}
               </tr>
             ))}
           </tbody>
