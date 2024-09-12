@@ -1,179 +1,191 @@
-.contract-card-container {
-  padding: 20px;
-  height: calc(100vh - 180px); /* Висота сторінки без смуги прокрутки */
+.contract-card-container-unique {
+  padding: 10px;
+  height: calc(100vh - 180px);
   display: flex;
   flex-direction: column;
-  overflow: hidden; /* Заборона появи прокрутки */
+  overflow: hidden;
+  font-size: 0.9rem;
 }
 
-.contract-header {
+.contract-header-unique {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 
-.contract-header h3 {
-  margin: 0;
-}
-
-.contract-number {
+.contract-number-unique {
   color: gray;
-  font-size: 1rem;
+  font-size: 0.8rem;
 }
 
-.contract-form {
+.contract-form-unique {
   display: flex;
   flex-direction: column;
 }
 
-.form-horizontal-group {
+.form-horizontal-group-unique {
   display: flex;
   justify-content: space-between;
-  gap: 20px;
-  margin-bottom: 15px;
+  gap: 10px;
+  margin-bottom: 10px;
 }
 
-.form-group {
+.form-group-unique {
   display: flex;
   flex-direction: column;
-  /* Видалено width: 100%; для гнучкого розміщення */
   flex: 1;
-  min-width: 150px; /* Мінімальна ширина для кращого відображення */
+  min-width: 80px;
 }
 
-.form-group label {
+.form-group-unique label {
   margin-bottom: 5px;
   font-weight: bold;
+  font-size: 0.8rem;
 }
 
-.actions {
-  margin-top: 20px;
+.currency-container-unique {
+  margin-top: 5px;
   display: flex;
-  gap: 10px;
+  flex-direction: column;
 }
 
-.divider {
+.actions-unique {
+  margin-top: 10px;
+  display: flex;
+  gap: 5px;
+}
+
+.divider-unique {
   border: none;
   height: 2px;
   background-color: #333;
-  margin: 20px 0;
+  margin: 10px 0;
 }
 
-.payments-section {
+.payments-section-unique {
   display: flex;
   justify-content: space-between;
-  gap: 20px;
-  overflow: hidden; /* Заборона прокрутки для таблиць */
-  flex-grow: 1; /* Займає доступний простір */
+  gap: 10px;
+  overflow: hidden;
+  flex-grow: 1;
 }
 
-.payments-left, .payments-right {
+.payments-left-unique,
+.payments-right-unique {
   width: 48%;
-  overflow-y: auto; /* Якщо багато рядків, додати прокрутку тільки для таблиці */
+  overflow-y: auto;
 }
 
-.payments-table {
+.payments-table-unique {
   width: 100%;
   border-collapse: collapse;
   border: 1px solid #ddd;
 }
 
-.payments-table th, .payments-table td {
-  padding: 5px; /* Зменшено padding для зменшення висоти рядків */
+.payments-table-unique th,
+.payments-table-unique td {
+  padding: 4px;
   border: 1px solid #ddd;
-  font-size: 14px; /* Зменшено розмір шрифту для компактнішого вигляду */
+  font-size: 12px;
 }
 
-.payments-table th {
+.payments-table-unique th {
   background-color: #333;
   color: #fff;
-  padding: 6px; /* Трохи більший padding для заголовків таблиць */
 }
 
-.payments-table tr.selected {
+.payments-table-unique tr.selected {
   background-color: #4fc3f7;
   color: white;
 }
 
-.payments-table tr:hover {
-  background-color: #e0f7fa; /* Змініть колір фону для чіткого контрасту */
-  color: black; /* Переконайтеся, що колір тексту залишається читабельним */
+.payments-table-unique tr:hover {
+  background-color: #e0f7fa;
+  color: black;
   cursor: pointer;
 }
 
-.payment-actions {
+.payment-actions-unique {
   display: flex;
   justify-content: flex-start;
-  gap: 10px;
-  margin-bottom: 10px;
+  gap: 5px;
+  margin-bottom: 5px;
 }
 
-.payment-actions button {
-  padding: 8px 12px;
+.payment-actions-unique button {
+  padding: 6px 8px;
   background-color: #007bff;
   border: none;
   color: white;
   cursor: pointer;
-  border-radius: 5px;
+  border-radius: 3px;
+  font-size: 0.8rem;
 }
 
-.payment-actions button:hover {
+.payment-actions-unique button:hover {
   background-color: #0056b3;
 }
 
-.payment-actions button:disabled {
+.payment-actions-unique button:disabled {
   background-color: #cccccc;
   cursor: not-allowed;
 }
 
-/* Додаткові стилі для розміщення реквізитів в одному рядку */
-.additional-requisites .form-group {
-  flex: 1;
-  min-width: 120px; /* Можна зменшити для кращої відповідності */
-}
-
-/* Медіа-запити для адаптивності */
-@media (max-width: 1200px) {
-  .additional-requisites .form-group {
-    min-width: 100px;
-  }
-}
-
-@media (max-width: 800px) {
-  .contract-header {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .contract-number {
-    margin-top: 10px;
-  }
-
-  .form-horizontal-group {
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .additional-requisites .form-group {
-    min-width: 100%;
-  }
-
-  .payments-section {
-    flex-direction: column;
-  }
-
-  .payments-left, .payments-right {
-    width: 100%;
-  }
-}
-
-
-.highlighted input {
-  background-color: lightgreen;
+.highlight-input {
+  background-color: lightgreen !important;
 }
 
 input[disabled] {
   background-color: #f0f0f0;
+  color: #888;
+  cursor: not-allowed;
+  border: 1px solid #ccc;
 }
 
+.form-group-bordered-unique {
+  border: 2px solid #ddd;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+
+.additional-requisites-unique .form-group-unique {
+  flex: 1;
+  min-width: 80px;
+}
+
+@media (max-width: 1200px) {
+  .additional-requisites-unique .form-group-unique {
+    min-width: 60px;
+  }
+}
+
+@media (max-width: 800px) {
+  .contract-header-unique {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .contract-number-unique {
+    margin-top: 10px;
+  }
+
+  .form-horizontal-group-unique {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .additional-requisites-unique .form-group-unique {
+    min-width: 100%;
+  }
+
+  .payments-section-unique {
+    flex-direction: column;
+  }
+
+  .payments-left-unique,
+  .payments-right-unique {
+    width: 100%;
+  }
+}

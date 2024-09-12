@@ -1,104 +1,141 @@
 import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { collection, query, where, getDocs, deleteDoc, doc, addDoc, updateDoc } from 'firebase/firestore';
-import { db } from '../../../../firebase'; // Firestore config
-import { getNextContractNumber } from '../../../services/contractNumeric'; // Number generation
-import PaymentCard from '../Payments/PaymentCard'; // Імпорт компонента PaymentCard
-import CounterpartyModal from '../../Modal/CounterpartyModal'; // Modal for selecting a counterparty
-import './contractCard.css'; // Styles
+import { db } from '../../../../firebase';
+import { getNextContractNumber } from '../../../services/contractNumeric';
+import PaymentCard from '../Payments/PaymentCard';
+import CounterpartyModal from '../../Modal/CounterpartyModal';
+import './contractCard.css';
 
 const ContractCard = ({ contract, onSave, onCancel }) => {
   const { register, handleSubmit, setValue, watch } = useForm();
   const [incomingPayments, setIncomingPayments] = useState([]);
   const [outgoingPayments, setOutgoingPayments] = useState([]);
   const [selectedPayment, setSelectedPayment] = useState(null);
-  const [isAddingPayment, setIsAddingPayment] = useState(false); // Стан для додавання/редагування платежу
-  const [isModalOpen, setIsModalOpen] = useState(false); // Modal state for client selection
+  const [isAddingPayment, setIsAddingPayment] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedClient, setSelectedClient] = useState(contract?.client || '');
-  const [calculatingDirection, setCalculatingDirection] = useState(null); // Для контролю напрямку розрахунків
 
   const contractType = watch('contractType', '');
-  const sumReceived = watch('sumReceived', 0); // Сума зараховано
-  const sumTransferred = watch('sumTransferred', 0); // Сума перераховано
-  const commissionGross = watch('commissionGross', 0); // Комісія бруто
-  const commissionNet = watch('commissionNet', 0); // Комісія нето
-  const profit = watch('profit', 0); // Прибуток
+  const sumReceived = watch('sumReceived', 0);
+  const sumTransferred = watch('sumTransferred', 0);
+  const commissionGross = watch('commissionGross', 0);
+  const commissionNet = watch('commissionNet', 0);
+  const commissionNetPercent = watch('commissionNetPercent', 0);
+  const commissionGrossPercent = watch('commissionGrossPercent', 0);
+  const exchangeRate = watch('exchangeRate', 1);
+  const commissionNetFromPayments = watch('netPaymentCommission', 0);
+  const commissionGrossFromPayments = watch('grossPaymentCommission', 0);
+  const totalNetUSD = watch('totalNetUSD', 0);
+  const totalGrossUSD = watch('totalGrossUSD', 0);
+  const profit = watch('profit', 0);
 
-  // Динамічні обчислення
+  // Логіка обчислення значень залежно від типу контракту
   useEffect(() => {
-    if (contractType === 'Видача' && calculatingDirection !== 'sumReceived' && sumReceived > 0 && commissionGross >= 0) {
-      setCalculatingDirection('sumReceived');
-      const newSumTransferred = sumReceived - commissionGross;
-      if (newSumTransferred !== sumTransferred) {
-        setValue('sumTransferred', newSumTransferred);
-      }
+    if (contractType === 'Перерахування') {
+      const calculatedSumReceived = parseFloat(sumTransferred) + parseFloat(commissionGross);
+      setValue('sumReceived', calculatedSumReceived);
+    } else if (contractType === 'Видача') {
+      const calculatedSumTransferred = parseFloat(sumReceived) - parseFloat(commissionGross);
+      setValue('sumTransferred', calculatedSumTransferred);
     }
-  }, [sumReceived, commissionGross, setValue, calculatingDirection, sumTransferred, contractType]);
+  }, [contractType, sumReceived, sumTransferred, commissionGross, setValue]);
 
+  // Логіка автоматичного розрахунку Комісії Нето та Комісії Бруто
   useEffect(() => {
-    if (contractType === 'Перерахування' && calculatingDirection !== 'sumTransferred' && sumTransferred > 0 && commissionGross >= 0) {
-      setCalculatingDirection('sumTransferred');
-      const newSumReceived = parseFloat(sumTransferred) + parseFloat(commissionGross);
-      if (newSumReceived !== sumReceived) {
-        setValue('sumReceived', newSumReceived);
-      }
+    if (contractType === 'Перерахування' && commissionNetPercent) {
+      const calculatedCommissionNet = parseFloat(sumTransferred) * (parseFloat(commissionNetPercent) / 100);
+      setValue('commissionNet', calculatedCommissionNet.toFixed(2));
+    } else if (contractType === 'Видача' && commissionNetPercent) {
+      const calculatedCommissionNet = parseFloat(sumReceived) * (parseFloat(commissionNetPercent) / 100);
+      setValue('commissionNet', calculatedCommissionNet.toFixed(2));
     }
-  }, [sumTransferred, commissionGross, setValue, calculatingDirection, sumReceived, contractType]);
+  }, [contractType, sumTransferred, sumReceived, commissionNetPercent, setValue]);
 
   useEffect(() => {
-    // Після кожного перерахунку обнуляємо напрямок для запобігання циклам
-    if (calculatingDirection) {
-      setTimeout(() => setCalculatingDirection(null), 0);
+    if (contractType === 'Перерахування' && commissionGrossPercent) {
+      const calculatedCommissionGross = parseFloat(sumTransferred) * (parseFloat(commissionGrossPercent) / 100);
+      setValue('commissionGross', calculatedCommissionGross.toFixed(2));
+    } else if (contractType === 'Видача' && commissionGrossPercent) {
+      const calculatedCommissionGross = parseFloat(sumReceived) * (parseFloat(commissionGrossPercent) / 100);
+      setValue('commissionGross', calculatedCommissionGross.toFixed(2));
     }
-  }, [calculatingDirection]);
+  }, [contractType, sumTransferred, sumReceived, commissionGrossPercent, setValue]);
 
-  useEffect(() => {
-    if (commissionGross >= 0 && commissionNet >= 0) {
-      setValue('profit', commissionGross - commissionNet);
+  // Функція для підрахунку комісій Нето і Бруто з усіх платежів
+  const calculateCommissionsFromPayments = (payments) => {
+    let totalNetCommission = 0;
+    let totalGrossCommission = 0;
+
+    payments.forEach(payment => {
+      totalNetCommission += payment.commissionNet || 0;
+      totalGrossCommission += payment.commissionGross || 0;
+    });
+
+    setValue('netPaymentCommission', totalNetCommission);
+    setValue('grossPaymentCommission', totalGrossCommission);
+  };
+
+  // Завантаження платежів та розрахунок комісій
+  const fetchPaymentsAndCalculateCommissions = async () => {
+    if (contract) {
+      const contractNumber = contract.number;
+
+      // Вхідні платежі
+      const incomingQuery = query(
+        collection(db, 'payments'),
+        where('contractNumber', '==', contractNumber),
+        where('direction', '==', 'incoming')
+      );
+      const incomingSnapshot = await getDocs(incomingQuery);
+      const loadedIncomingPayments = incomingSnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+
+      // Вихідні платежі
+      const outgoingQuery = query(
+        collection(db, 'payments'),
+        where('contractNumber', '==', contractNumber),
+        where('direction', '==', 'outgoing')
+      );
+      const outgoingSnapshot = await getDocs(outgoingQuery);
+      const loadedOutgoingPayments = outgoingSnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+
+      setIncomingPayments(loadedIncomingPayments);
+      setOutgoingPayments(loadedOutgoingPayments);
+
+      // Підрахунок комісій
+      const allPayments = [...loadedIncomingPayments, ...loadedOutgoingPayments];
+      calculateCommissionsFromPayments(allPayments);
+
+      setValue('number', contract.number);
+      setValue('date', contract.date);
+      setValue('contractType', contract.contractType);
+      setSelectedClient(contract.client);
+    } else {
+      const newContractNumber = await getNextContractNumber();
+      setValue('number', newContractNumber);
     }
-  }, [commissionGross, commissionNet, setValue]);
+  };
 
   useEffect(() => {
-    const fetchPayments = async () => {
-      if (contract) {
-        const contractNumber = contract.number;
-
-        const incomingQuery = query(
-          collection(db, 'payments'),
-          where('contractNumber', '==', contractNumber),
-          where('direction', '==', 'incoming')
-        );
-        const incomingSnapshot = await getDocs(incomingQuery);
-        const loadedIncomingPayments = incomingSnapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        setIncomingPayments(loadedIncomingPayments);
-
-        const outgoingQuery = query(
-          collection(db, 'payments'),
-          where('contractNumber', '==', contractNumber),
-          where('direction', '==', 'outgoing')
-        );
-        const outgoingSnapshot = await getDocs(outgoingQuery);
-        const loadedOutgoingPayments = outgoingSnapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        setOutgoingPayments(loadedOutgoingPayments);
-
-        setValue('number', contract.number);
-        setValue('date', contract.date);
-        setValue('contractType', contract.contractType);
-        setSelectedClient(contract.client);
-      } else {
-        const newContractNumber = await getNextContractNumber();
-        setValue('number', newContractNumber);
-      }
-    };
-
-    fetchPayments();
+    fetchPaymentsAndCalculateCommissions();
   }, [contract, setValue]);
+
+  // Розрахунок Загальної суми Нето USD, Загальної суми Бруто USD та Прибутку
+  useEffect(() => {
+    const totalNet = parseFloat(commissionNet) + parseFloat(commissionNetFromPayments);
+    const totalGross = parseFloat(commissionGross) + parseFloat(commissionGrossFromPayments);
+    const calculatedProfit = totalGross - totalNet;
+
+    setValue('totalNetUSD', totalNet);
+    setValue('totalGrossUSD', totalGross);
+    setValue('profit', calculatedProfit);
+  }, [commissionNet, commissionNetFromPayments, commissionGross, commissionGrossFromPayments, setValue]);
 
   const handleSavePayment = async (newPayment) => {
     if (selectedPayment) {
@@ -130,16 +167,17 @@ const ContractCard = ({ contract, onSave, onCancel }) => {
 
     setIsAddingPayment(false);
     setSelectedPayment(null);
+    fetchPaymentsAndCalculateCommissions(); // Оновлюємо комісії після збереження платіжки
   };
 
   const handleAddPayment = (direction) => {
     setSelectedPayment(null);
-    setIsAddingPayment(true);
+    setIsAddingPayment(true); // Показуємо форму для додавання нового платежу
   };
 
   const handleEditPayment = () => {
     if (selectedPayment) {
-      setIsAddingPayment(true);
+      setIsAddingPayment(true); // Відкриваємо форму для редагування платежу
     }
   };
 
@@ -154,17 +192,18 @@ const ContractCard = ({ contract, onSave, onCancel }) => {
           setOutgoingPayments(prev => prev.filter(p => п.id !== selectedPayment.id));
         }
         setSelectedPayment(null);
+        fetchPaymentsAndCalculateCommissions(); // Оновлюємо комісії після видалення платіжки
       }
     }
   };
 
   const handleRowDoubleClick = (payment) => {
-    setSelectedPayment(payment);
+    setSelectedPayment(payment); // Вибір платежу для редагування
     setIsAddingPayment(true);
   };
 
   const handleRowClick = (payment) => {
-    setSelectedPayment(payment);
+    setSelectedPayment(payment); // Вибір платежу
   };
 
   const onSubmit = (data) => {
@@ -191,31 +230,38 @@ const ContractCard = ({ contract, onSave, onCancel }) => {
   }
 
   return (
-    <div className="contract-card-container">
-      <div className="contract-header">
+    <div className="contract-card-container-unique">
+      <div className="contract-header-unique">
         <h3>{contract ? 'Редагувати контракт' : 'Новий контракт'}</h3>
         {contract && (
-          <span className="contract-number">Номер: {contract.number}</span>
+          <span className="contract-number-unique">Номер: {contract.number}</span>
         )}
       </div>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="contract-form">
-        <div className="form-horizontal-group">
-          <div className="form-group">
+      <form onSubmit={handleSubmit(onSubmit)} className="contract-form-unique">
+        {/* Ряд 1 */}
+        <div className="form-horizontal-group-unique">
+          <div className="form-group-unique">
             <label>Номер:</label>
             <input type="text" {...register('number')} readOnly />
           </div>
-          <div className="form-group">
+          <div className="form-group-unique">
             <label>Дата:</label>
             <input type="date" {...register('date', { required: true })} />
           </div>
+          <div className="form-group-unique">
+            <label>Курс на дату угоди:</label>
+            <input type="number" {...register('exchangeRate')} defaultValue={1} />
+          </div>
         </div>
-        <div className="form-horizontal-group">
-          <div className="form-group">
+
+        {/* Ряд 2 */}
+        <div className="form-horizontal-group-unique">
+          <div className="form-group-unique">
             <label>Клієнт:</label>
             <input type="text" value={selectedClient} readOnly onClick={() => setIsModalOpen(true)} required />
           </div>
-          <div className="form-group">
+          <div className="form-group-unique">
             <label>Вид контракту:</label>
             <select {...register('contractType', { required: true })} defaultValue={contract?.contractType || ''} required>
               <option value="" disabled>Оберіть тип контракту</option>
@@ -225,45 +271,112 @@ const ContractCard = ({ contract, onSave, onCancel }) => {
           </div>
         </div>
 
-        <div className="form-horizontal-group additional-requisites">
-          <div className={`form-group ${contractType === 'Видача' ? 'highlighted' : ''}`}>
-            <label>Сума зараховано:</label>
-            <input type="number" {...register('sumReceived')} defaultValue={0} disabled={contractType === 'Перерахування'} />
+        {/* Ряд 3 */}
+        <div className="form-horizontal-group-unique form-group-bordered-unique">
+          <div className="form-group-unique">
+            <label>Зарахування:</label>
+            <input
+              type="number"
+              {...register('sumReceived')}
+              defaultValue={0}
+              className={contractType === 'Видача' ? 'highlight-input' : ''}
+              disabled={contractType === 'Перерахування'}
+            />
           </div>
-          <div className="form-group">
-            <label>Комісія нето:</label>
+          <div className="form-group-unique">
+            <label>Валюта зарахування:</label>
+            <select {...register('receivedCurrency')} required>
+              <option value="USD">USD</option>
+              <option value="EUR">EUR</option>
+            </select>
+          </div>
+          <div className="form-group-unique">
+            <label>Комісія Нето (%):</label>
+            <input type="number" {...register('commissionNetPercent')} max="100" />
+          </div>
+          <div className="form-group-unique">
+            <label>Комісія Нето:</label>
             <input type="number" {...register('commissionNet')} defaultValue={0} />
           </div>
-          <div className="form-group">
-            <label>Комісія бруто:</label>
+          <div className="form-group-unique">
+            <label>Комісія Бруто (%):</label>
+            <input type="number" {...register('commissionGrossPercent')} max="100" />
+          </div>
+          <div className="form-group-unique">
+            <label>Комісія Бруто:</label>
             <input type="number" {...register('commissionGross')} defaultValue={0} />
           </div>
-          <div className={`form-group ${contractType === 'Перерахування' ? 'highlighted' : ''}`}>
-            <label>Сума перераховано:</label>
-            <input type="number" {...register('sumTransferred')} defaultValue={0} disabled={contractType === 'Видача'} />
+          <div className="form-group-unique">
+            <label>Перерахування:</label>
+            <input
+              type="number"
+              {...register('sumTransferred')}
+              defaultValue={0}
+              className={contractType === 'Перерахування' ? 'highlight-input' : ''}
+              disabled={contractType === 'Видача'}
+            />
           </div>
-          <div className="form-group">
-            <label>Прибуток:</label>
-            <input type="number" {...register('profit')} readOnly defaultValue={0} />
+          <div className="form-group-unique">
+            <label>Валюта перерахування:</label>
+            <select {...register('transferredCurrency')} required>
+              <option value="USD">USD</option>
+              <option value="EUR">EUR</option>
+            </select>
           </div>
         </div>
 
-        <hr className="divider" />
-        <div className="actions">
+        {/* Ряд 4 */}
+        <div className="form-horizontal-group-unique">
+          <div className="form-group-unique">
+            <label>Зарахування в USD:</label>
+            <input type="number" readOnly disabled value={sumReceived * exchangeRate} />
+          </div>
+          <div className="form-group-unique">
+            <label>Перерахування в USD:</label>
+            <input type="number" readOnly disabled value={sumTransferred * exchangeRate} />
+          </div>
+          <div className="form-group-unique">
+            <label>Комісія Нето з платіжок:</label>
+            <input type="number" {...register('netPaymentCommission')} readOnly disabled value={commissionNetFromPayments} />
+          </div>
+          <div className="form-group-unique">
+            <label>Комісія Бруто з платіжок:</label>
+            <input type="number" {...register('grossPaymentCommission')} readOnly disabled value={commissionGrossFromPayments} />
+          </div>
+        </div>
+
+        {/* Ряд 5 */}
+        <div className="form-horizontal-group-unique">
+          <div className="form-group-unique">
+            <label>Загальна сума Нето USD:</label>
+            <input type="number" {...register('totalNetUSD')} readOnly disabled />
+          </div>
+          <div className="form-group-unique">
+            <label>Загальна сума Бруто USD:</label>
+            <input type="number" {...register('totalGrossUSD')} readOnly disabled />
+          </div>
+          <div className="form-group-unique">
+            <label>Прибуток USD:</label>
+            <input type="number" {...register('profit')} readOnly disabled />
+          </div>
+        </div>
+
+        <hr className="divider-unique" />
+        <div className="actions-unique">
           <button type="submit">Зберегти</button>
           <button type="button" onClick={onCancel}>Скасувати</button>
         </div>
       </form>
 
-      <div className="payments-section">
-        <div className="payments-left">
+      <div className="payments-section-unique">
+        <div className="payments-left-unique">
           <h4>Вхідні платежі</h4>
-          <div className="payment-actions">
+          <div className="payment-actions-unique">
             <button onClick={() => handleAddPayment('incoming')}>Додати</button>
             <button onClick={handleEditPayment} disabled={!selectedPayment}>Редагувати</button>
             <button onClick={handleDeletePayment} disabled={!selectedPayment}>Видалити</button>
           </div>
-          <table className="payments-table">
+          <table className="payments-table-unique">
             <thead>
               <tr>
                 <th>Номер</th>
@@ -294,14 +407,14 @@ const ContractCard = ({ contract, onSave, onCancel }) => {
           </table>
         </div>
 
-        <div className="payments-right">
+        <div className="payments-right-unique">
           <h4>Вихідні платежі</h4>
-          <div className="payment-actions">
+          <div className="payment-actions-unique">
             <button onClick={() => handleAddPayment('outgoing')}>Додати</button>
             <button onClick={handleEditPayment} disabled={!selectedPayment}>Редагувати</button>
             <button onClick={handleDeletePayment} disabled={!selectedPayment}>Видалити</button>
           </div>
-          <table className="payments-table">
+          <table className="payments-table-unique">
             <thead>
               <tr>
                 <th>Номер</th>

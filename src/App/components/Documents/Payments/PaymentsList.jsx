@@ -76,8 +76,6 @@ const Payments = ({ goBack }) => {
         amount: newPayment.amount,
         currency: newPayment.currency,
         contractNumber: newPayment.contractNumber,
-        commissionNet: newPayment.commissionNet, // Додаємо Комісію нето
-        commissionGross: newPayment.commissionGross, // Додаємо Комісію бруто
       });
 
       setPayments(prevPayments =>
@@ -95,8 +93,6 @@ const Payments = ({ goBack }) => {
         amount: newPayment.amount,
         currency: newPayment.currency,
         contractNumber: newPayment.contractNumber,
-        commissionNet: newPayment.commissionNet, // Додаємо Комісію нето
-        commissionGross: newPayment.commissionGross, // Додаємо Комісію бруто
       });
       setPayments([...payments, { id: docRef.id, ...newPayment }]);
     }
@@ -154,13 +150,10 @@ const Payments = ({ goBack }) => {
               <th onClick={() => handleSort('date')}>Дата {sortConfig.key === 'date' ? (sortConfig.direction === 'asc' ? '▲' : '▼') : ''}</th>
               <th onClick={() => handleSort('direction')}>Напрямок {sortConfig.key === 'direction' ? (sortConfig.direction === 'asc' ? '▲' : '▼') : ''}</th>
               <th onClick={() => handleSort('counterparty')}>Контрагент {sortConfig.key === 'counterparty' ? (sortConfig.direction === 'asc' ? '▲' : '▼') : ''}</th>
-              <th onClick={() => handleSort('wallet')}>Гаманець {sortConfig.key === 'wallet' ? (sortConfig.direction === 'asc' ? '▲' : '▼') : ''}</th> {/* Додано стовпець для гаманця */}
+              <th onClick={() => handleSort('wallet')}>Гаманець {sortConfig.key === 'wallet' ? (sortConfig.direction === 'asc' ? '▲' : '▼') : ''}</th>
               <th onClick={() => handleSort('amount')}>Сума {sortConfig.key === 'amount' ? (sortConfig.direction === 'asc' ? '▲' : '▼') : ''}</th>
               <th onClick={() => handleSort('currency')}>Валюта {sortConfig.key === 'currency' ? (sortConfig.direction === 'asc' ? '▲' : '▼') : ''}</th>
               <th onClick={() => handleSort('contractNumber')}>Номер угоди {sortConfig.key === 'contractNumber' ? (sortConfig.direction === 'asc' ? '▲' : '▼') : ''}</th>
-              {/* Додаємо колонки для Комісії нето та Комісії бруто */}
-              <th onClick={() => handleSort('commissionNet')}>Комісія нето {sortConfig.key === 'commissionNet' ? (sortConfig.direction === 'asc' ? '▲' : '▼') : ''}</th>
-              <th onClick={() => handleSort('commissionGross')}>Комісія бруто {sortConfig.key === 'commissionGross' ? (sortConfig.direction === 'asc' ? '▲' : '▼') : ''}</th>
             </tr>
           </thead>
           <tbody>
@@ -175,12 +168,10 @@ const Payments = ({ goBack }) => {
                 <td>{payment.date}</td>
                 <td>{payment.direction}</td>
                 <td>{payment.counterparty}</td>
-                <td>{payment.wallet}</td> {/* Відображаємо значення гаманця */}
+                <td>{payment.wallet}</td>
                 <td>{payment.amount}</td>
                 <td>{payment.currency}</td>
                 <td>{payment.contractNumber}</td>
-                <td>{payment.commissionNet}</td> {/* Відображаємо Комісію нето */}
-                <td>{payment.commissionGross}</td> {/* Відображаємо Комісію бруто */}
               </tr>
             ))}
           </tbody>
