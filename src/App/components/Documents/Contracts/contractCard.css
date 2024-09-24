@@ -1,6 +1,6 @@
 .contract-card-container-unique {
-  padding: 10px;
-  height: calc(100vh - 180px);
+  padding: 20px;
+  height: calc(100vh - 200px); /* Висота враховує меню зліва */
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -22,6 +22,8 @@
 .contract-form-unique {
   display: flex;
   flex-direction: column;
+  flex-grow: 1;
+  overflow-y: auto;
 }
 
 .form-horizontal-group-unique {
@@ -29,19 +31,20 @@
   justify-content: space-between;
   gap: 10px;
   margin-bottom: 10px;
+  flex-wrap: wrap;
 }
 
 .form-group-unique {
   display: flex;
   flex-direction: column;
   flex: 1;
-  min-width: 80px;
+  min-width: 120px;
 }
 
 .form-group-unique label {
   margin-bottom: 5px;
   font-weight: bold;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
 }
 
 .currency-container-unique {
@@ -53,7 +56,8 @@
 .actions-unique {
   margin-top: 10px;
   display: flex;
-  gap: 5px;
+  gap: 10px;
+  justify-content: flex-end;
 }
 
 .divider-unique {
@@ -66,7 +70,7 @@
 .payments-section-unique {
   display: flex;
   justify-content: space-between;
-  gap: 10px;
+  gap: 20px;
   overflow: hidden;
   flex-grow: 1;
 }
@@ -85,9 +89,9 @@
 
 .payments-table-unique th,
 .payments-table-unique td {
-  padding: 4px;
+  padding: 8px;
   border: 1px solid #ddd;
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .payments-table-unique th {
@@ -109,18 +113,18 @@
 .payment-actions-unique {
   display: flex;
   justify-content: flex-start;
-  gap: 5px;
-  margin-bottom: 5px;
+  gap: 10px;
+  margin-bottom: 10px;
 }
 
 .payment-actions-unique button {
-  padding: 6px 8px;
+  padding: 8px 12px;
   background-color: #007bff;
   border: none;
   color: white;
   cursor: pointer;
-  border-radius: 3px;
-  font-size: 0.8rem;
+  border-radius: 5px;
+  font-size: 0.9rem;
 }
 
 .payment-actions-unique button:hover {
@@ -149,15 +153,13 @@ input[disabled] {
   border-radius: 5px;
 }
 
-
-.additional-requisites-unique .form-group-unique {
-  flex: 1;
-  min-width: 80px;
-}
-
 @media (max-width: 1200px) {
-  .additional-requisites-unique .form-group-unique {
-    min-width: 60px;
+  .form-horizontal-group-unique {
+    gap: 5px;
+  }
+
+  .form-group-unique {
+    min-width: 100px;
   }
 }
 
@@ -176,7 +178,7 @@ input[disabled] {
     gap: 10px;
   }
 
-  .additional-requisites-unique .form-group-unique {
+  .form-group-unique {
     min-width: 100%;
   }
 
