@@ -30,7 +30,6 @@ const ContractCard = ({ contract, onSave, onCancel }) => {
   const totalGrossUSD = watch('totalGrossUSD', 0);
   const profit = watch('profit', 0);
 
-  // Логіка обчислення значень залежно від типу контракту
   useEffect(() => {
     if (contractType === 'Перерахування') {
       const calculatedSumReceived = parseFloat(sumTransferred) + parseFloat(commissionGross);
@@ -41,7 +40,6 @@ const ContractCard = ({ contract, onSave, onCancel }) => {
     }
   }, [contractType, sumReceived, sumTransferred, commissionGross, setValue]);
 
-  // Логіка автоматичного розрахунку Комісії Нето та Комісії Бруто
   useEffect(() => {
     if (contractType === 'Перерахування' && commissionNetPercent) {
       const calculatedCommissionNet = parseFloat(sumTransferred) * (parseFloat(commissionNetPercent) / 100);
@@ -62,7 +60,6 @@ const ContractCard = ({ contract, onSave, onCancel }) => {
     }
   }, [contractType, sumTransferred, sumReceived, commissionGrossPercent, setValue]);
 
-  // Функція для підрахунку комісій Нето і Бруто з усіх платежів
   const calculateCommissionsFromPayments = (payments) => {
     let totalNetCommission = 0;
     let totalGrossCommission = 0;
@@ -76,12 +73,10 @@ const ContractCard = ({ contract, onSave, onCancel }) => {
     setValue('grossPaymentCommission', totalGrossCommission);
   };
 
-  // Завантаження платежів та розрахунок комісій
   const fetchPaymentsAndCalculateCommissions = async () => {
     if (contract) {
       const contractNumber = contract.number;
 
-      // Вхідні платежі
       const incomingQuery = query(
         collection(db, 'payments'),
         where('contractNumber', '==', contractNumber),
@@ -93,7 +88,6 @@ const ContractCard = ({ contract, onSave, onCancel }) => {
         ...doc.data(),
       }));
 
-      // Вихідні платежі
       const outgoingQuery = query(
         collection(db, 'payments'),
         where('contractNumber', '==', contractNumber),
@@ -108,7 +102,6 @@ const ContractCard = ({ contract, onSave, onCancel }) => {
       setIncomingPayments(loadedIncomingPayments);
       setOutgoingPayments(loadedOutgoingPayments);
 
-      // Підрахунок комісій
       const allPayments = [...loadedIncomingPayments, ...loadedOutgoingPayments];
       calculateCommissionsFromPayments(allPayments);
 
@@ -126,7 +119,6 @@ const ContractCard = ({ contract, onSave, onCancel }) => {
     fetchPaymentsAndCalculateCommissions();
   }, [contract, setValue]);
 
-  // Розрахунок Загальної суми Нето USD, Загальної суми Бруто USD та Прибутку
   useEffect(() => {
     const totalNet = parseFloat(commissionNet) + parseFloat(commissionNetFromPayments);
     const totalGross = parseFloat(commissionGross) + parseFloat(commissionGrossFromPayments);
@@ -167,17 +159,17 @@ const ContractCard = ({ contract, onSave, onCancel }) => {
 
     setIsAddingPayment(false);
     setSelectedPayment(null);
-    fetchPaymentsAndCalculateCommissions(); // Оновлюємо комісії після збереження платіжки
+    fetchPaymentsAndCalculateCommissions();
   };
 
   const handleAddPayment = (direction) => {
     setSelectedPayment(null);
-    setIsAddingPayment(true); // Показуємо форму для додавання нового платежу
+    setIsAddingPayment(true);
   };
 
   const handleEditPayment = () => {
     if (selectedPayment) {
-      setIsAddingPayment(true); // Відкриваємо форму для редагування платежу
+      setIsAddingPayment(true);
     }
   };
 
@@ -192,18 +184,18 @@ const ContractCard = ({ contract, onSave, onCancel }) => {
           setOutgoingPayments(prev => prev.filter(p => п.id !== selectedPayment.id));
         }
         setSelectedPayment(null);
-        fetchPaymentsAndCalculateCommissions(); // Оновлюємо комісії після видалення платіжки
+        fetchPaymentsAndCalculateCommissions();
       }
     }
   };
 
   const handleRowDoubleClick = (payment) => {
-    setSelectedPayment(payment); // Вибір платежу для редагування
+    setSelectedPayment(payment);
     setIsAddingPayment(true);
   };
 
   const handleRowClick = (payment) => {
-    setSelectedPayment(payment); // Вибір платежу
+    setSelectedPayment(payment);
   };
 
   const onSubmit = (data) => {
@@ -237,9 +229,10 @@ const ContractCard = ({ contract, onSave, onCancel }) => {
           <span className="contract-number-unique">Номер: {contract.number}</span>
         )}
       </div>
+      
 
       <form onSubmit={handleSubmit(onSubmit)} className="contract-form-unique">
-        {/* Ряд 1 */}
+        {/* Номер контракту, дата, клієнт */}
         <div className="form-horizontal-group-unique">
           <div className="form-group-unique">
             <label>Номер:</label>
@@ -250,29 +243,31 @@ const ContractCard = ({ contract, onSave, onCancel }) => {
             <input type="date" {...register('date', { required: true })} />
           </div>
           <div className="form-group-unique">
-            <label>Курс на дату угоди:</label>
-            <input type="number" {...register('exchangeRate')} defaultValue={1} />
-          </div>
-        </div>
-
-        {/* Ряд 2 */}
-        <div className="form-horizontal-group-unique">
-          <div className="form-group-unique">
             <label>Клієнт:</label>
             <input type="text" value={selectedClient} readOnly onClick={() => setIsModalOpen(true)} required />
           </div>
+        </div>
+
+        {/* Тип контракту, курс */}
+        <div className="form-horizontal-group-unique">
           <div className="form-group-unique">
-            <label>Вид контракту:</label>
-            <select {...register('contractType', { required: true })} defaultValue={contract?.contractType || ''} required>
+            <label>Тип контракту:</label>
+            <select {...register('contractType', { required: true })} defaultValue={contract?.contractType || ''}>
               <option value="" disabled>Оберіть тип контракту</option>
               <option value="Видача">Видача</option>
               <option value="Перерахування">Перерахування</option>
             </select>
           </div>
+          <div className="form-group-unique">
+            <label>Курс на дату угоди:</label>
+            <input type="number" {...register('exchangeRate')} defaultValue={1} />
+          </div>
         </div>
+        
 
-        {/* Ряд 3 */}
+        {/* Зарахування та перерахування у два ряди */}
         <div className="form-horizontal-group-unique form-group-bordered-unique">
+          {/* Ряд 1 */}
           <div className="form-group-unique">
             <label>Зарахування:</label>
             <input
@@ -284,7 +279,7 @@ const ContractCard = ({ contract, onSave, onCancel }) => {
             />
           </div>
           <div className="form-group-unique">
-            <label>Валюта зарахування:</label>
+            <label>Валюта:</label>
             <select {...register('receivedCurrency')} required>
               <option value="USD">USD</option>
               <option value="EUR">EUR</option>
@@ -298,14 +293,8 @@ const ContractCard = ({ contract, onSave, onCancel }) => {
             <label>Комісія Нето:</label>
             <input type="number" {...register('commissionNet')} defaultValue={0} />
           </div>
-          <div className="form-group-unique">
-            <label>Комісія Бруто (%):</label>
-            <input type="number" {...register('commissionGrossPercent')} max="100" />
-          </div>
-          <div className="form-group-unique">
-            <label>Комісія Бруто:</label>
-            <input type="number" {...register('commissionGross')} defaultValue={0} />
-          </div>
+
+          {/* Ряд 2 */}
           <div className="form-group-unique">
             <label>Перерахування:</label>
             <input
@@ -317,56 +306,57 @@ const ContractCard = ({ contract, onSave, onCancel }) => {
             />
           </div>
           <div className="form-group-unique">
-            <label>Валюта перерахування:</label>
+            <label>Валюта:</label>
             <select {...register('transferredCurrency')} required>
               <option value="USD">USD</option>
               <option value="EUR">EUR</option>
             </select>
           </div>
-        </div>
-
-        {/* Ряд 4 */}
-        <div className="form-horizontal-group-unique">
           <div className="form-group-unique">
-            <label>Зарахування в USD:</label>
-            <input type="number" readOnly disabled value={sumReceived * exchangeRate} />
+            <label>Комісія Бруто (%):</label>
+            <input type="number" {...register('commissionGrossPercent')} max="100" />
           </div>
           <div className="form-group-unique">
-            <label>Перерахування в USD:</label>
-            <input type="number" readOnly disabled value={sumTransferred * exchangeRate} />
-          </div>
-          <div className="form-group-unique">
-            <label>Комісія Нето з платіжок:</label>
-            <input type="number" {...register('netPaymentCommission')} readOnly disabled value={commissionNetFromPayments} />
-          </div>
-          <div className="form-group-unique">
-            <label>Комісія Бруто з платіжок:</label>
-            <input type="number" {...register('grossPaymentCommission')} readOnly disabled value={commissionGrossFromPayments} />
+            <label>Комісія Бруто:</label>
+            <input type="number" {...register('commissionGross')} defaultValue={0} />
           </div>
         </div>
 
-        {/* Ряд 5 */}
-        <div className="form-horizontal-group-unique">
-          <div className="form-group-unique">
-            <label>Загальна сума Нето USD:</label>
-            <input type="number" {...register('totalNetUSD')} readOnly disabled />
+        {/* Сума в USD, комісії з платіжок */}
+                {/* Інформація в стилі таблиці */}
+                <div className="contract-info-table">
+          <div className="table-row">
+            <div className="table-cell">Зарахування в USD:</div>
+            <div className="table-cell">{(sumReceived * exchangeRate).toFixed(2)}</div>
           </div>
-          <div className="form-group-unique">
-            <label>Загальна сума Бруто USD:</label>
-            <input type="number" {...register('totalGrossUSD')} readOnly disabled />
+          <div className="table-row">
+            <div className="table-cell">Перерахування в USD:</div>
+            <div className="table-cell">{(sumTransferred * exchangeRate).toFixed(2)}</div>
           </div>
-          <div className="form-group-unique">
-            <label>Прибуток USD:</label>
-            <input type="number" {...register('profit')} readOnly disabled />
+          <div className="table-row">
+            <div className="table-cell">Комісія Нето з платіжок:</div>
+            <div className="table-cell">{commissionNetFromPayments.toFixed(2)}</div>
+          </div>
+          <div className="table-row">
+            <div className="table-cell">Комісія Бруто з платіжок:</div>
+            <div className="table-cell">{commissionGrossFromPayments.toFixed(2)}</div>
+          </div>
+          <div className="table-row">
+            <div className="table-cell">Загальна сума Нето USD:</div>
+            <div className="table-cell">{totalNetUSD.toFixed(2)}</div>
+          </div>
+          <div className="table-row">
+            <div className="table-cell">Загальна сума Бруто USD:</div>
+            <div className="table-cell">{totalGrossUSD.toFixed(2)}</div>
+          </div>
+          <div className="table-row">
+            <div className="table-cell">Прибуток USD:</div>
+            <div className="table-cell">{profit.toFixed(2)}</div>
           </div>
         </div>
-
-        <hr className="divider-unique" />
-        <div className="actions-unique">
-          <button type="submit">Зберегти</button>
-          <button type="button" onClick={onCancel}>Скасувати</button>
-        </div>
+  
       </form>
+      <hr className="divider-unique" />
 
       <div className="payments-section-unique">
         <div className="payments-left-unique">
@@ -445,6 +435,10 @@ const ContractCard = ({ contract, onSave, onCancel }) => {
           </table>
         </div>
       </div>
+        <div className="actions-unique">
+          <button type="submit">Зберегти</button>
+          <button type="button" onClick={onCancel}>Скасувати</button>
+        </div>
 
       {isModalOpen && (
         <CounterpartyModal onClose={() => setIsModalOpen(false)} onSelect={handleSelectClient} />

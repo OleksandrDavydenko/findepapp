@@ -1,29 +1,45 @@
+/* Основний контейнер для картки контракту */
 .contract-card-container-unique {
-  padding: 20px;
-  height: calc(100vh - 200px); /* Висота враховує меню зліва */
+  padding: 15px;
+  height: 100%;
+  max-height: calc(100vh - 180px);
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box; /* Включає padding та border в розміри */
+  width: 100%; /* Забезпечує, що контейнер не вийде за межі сторінки */
 }
 
+/* Заголовок контракту */
 .contract-header-unique {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #333;
 }
 
 .contract-number-unique {
-  color: gray;
-  font-size: 0.8rem;
+  color: #888;
+  font-size: 0.9rem;
 }
 
+/* Основна форма */
 .contract-form-unique {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Дві колонки */
+  gap: 10px;
   flex-grow: 1;
   overflow-y: auto;
+  width: 100%; /* Забезпечує, що форма не виходить за межі контейнера */
+  box-sizing: border-box;
+  max-height: calc(100vh - 150px); /* Максимальна висота для адаптивності */
 }
 
 .form-horizontal-group-unique {
@@ -34,6 +50,7 @@
   flex-wrap: wrap;
 }
 
+/* Оформлення кожного поля форми */
 .form-group-unique {
   display: flex;
   flex-direction: column;
@@ -44,40 +61,114 @@
 .form-group-unique label {
   margin-bottom: 5px;
   font-weight: bold;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
+  color: #555;
 }
 
+.form-group-unique input,
+.form-group-unique select {
+  width: 100%;
+  padding: 6px;
+  font-size: 0.85rem;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  background-color: #f9f9f9;
+  box-sizing: border-box;
+}
+
+/* Рамка для реквізитів */
+.form-group-bordered-unique {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* Чотири колонки для реквізитів */
+  gap: 10px;
+  padding: 15px;
+  border: 2px solid #ddd;
+  border-radius: 5px;
+  background-color: #fafafa;
+  box-sizing: border-box;
+  width: 100%; /* Забезпечує гнучкість рамки для запобігання горизонтальному скролу */
+}
+
+/* Вирівнювання і розмір валютних полів */
 .currency-container-unique {
-  margin-top: 5px;
   display: flex;
   flex-direction: column;
 }
 
+.currency-container-unique select {
+  width: 100%;
+  max-width: 100px;
+  margin-bottom: 10px;
+}
+
+.form-group-unique input[type="number"] {
+  max-width: 100px; /* Обмеження ширини для полів з числами */
+}
+
+.form-group-unique input:focus,
+.form-group-unique select:focus {
+  border-color: #00aaff;
+  outline: none;
+}
+
+.form-group-unique input[disabled] {
+  background-color: #e0e0e0;
+  color: #888;
+}
+
+/* Поля з акцентом */
+.highlight-input {
+  border-color: #00aaff;
+}
+
+/* Дії внизу форми */
 .actions-unique {
-  margin-top: 10px;
+  margin-top: 15px;
   display: flex;
   gap: 10px;
   justify-content: flex-end;
 }
 
-.divider-unique {
+.actions-unique button {
+  padding: 8px 16px;
+  font-size: 0.85rem;
+  background-color: #00aaff;
+  color: white;
   border: none;
-  height: 2px;
-  background-color: #333;
-  margin: 10px 0;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
 }
 
+.actions-unique button:hover {
+  background-color: #0077cc;
+}
+
+.actions-unique button[type='button'] {
+  background-color: #f44336;
+}
+
+.actions-unique button[type='button']:hover {
+  background-color: #c62828;
+}
+
+/* Таблиці з платежами */
 .payments-section-unique {
+  margin-top: 20px;
   display: flex;
   justify-content: space-between;
-  gap: 20px;
-  overflow: hidden;
+  gap: 10px;
   flex-grow: 1;
+  overflow-y: auto; /* Додаємо авто-прокрутку для секцій з платежами */
+  max-height: calc(100vh - 250px); /* Забезпечує адаптивну висоту для скролу */
+  width: 100%;
 }
 
+/* Контейнери для платежів */
 .payments-left-unique,
 .payments-right-unique {
-  width: 48%;
+  width: 100%; /* Дозволяє обом частинам займати повну ширину при зумі */
+  max-width: 100%;
   overflow-y: auto;
 }
 
@@ -85,13 +176,17 @@
   width: 100%;
   border-collapse: collapse;
   border: 1px solid #ddd;
+  box-sizing: border-box;
+  overflow-y: auto;
+  max-height: 100%;
 }
 
 .payments-table-unique th,
 .payments-table-unique td {
   padding: 8px;
   border: 1px solid #ddd;
-  font-size: 14px;
+  font-size: 0.85rem;
+  max-width: 100%; /* Запобігає виходу за межі сторінки */
 }
 
 .payments-table-unique th {
@@ -100,31 +195,30 @@
 }
 
 .payments-table-unique tr.selected {
-  background-color: #4fc3f7;
+  background-color: #00aaff;
   color: white;
 }
 
 .payments-table-unique tr:hover {
   background-color: #e0f7fa;
-  color: black;
   cursor: pointer;
 }
 
 .payment-actions-unique {
   display: flex;
   justify-content: flex-start;
-  gap: 10px;
-  margin-bottom: 10px;
+  gap: 8px;
+  margin-bottom: 8px;
 }
 
 .payment-actions-unique button {
-  padding: 8px 12px;
+  padding: 6px 10px;
   background-color: #007bff;
   border: none;
   color: white;
   cursor: pointer;
   border-radius: 5px;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
 }
 
 .payment-actions-unique button:hover {
@@ -136,23 +230,15 @@
   cursor: not-allowed;
 }
 
-.highlight-input {
-  background-color: lightgreen !important;
+.divider-unique {
+  border: none;
+  height: 2px;
+  background-color: #333;
+  margin: 10px 0;
+  max-width: 100%;
 }
 
-input[disabled] {
-  background-color: #f0f0f0;
-  color: #888;
-  cursor: not-allowed;
-  border: 1px solid #ccc;
-}
-
-.form-group-bordered-unique {
-  border: 2px solid #ddd;
-  padding: 10px;
-  border-radius: 5px;
-}
-
+/* Адаптивність */
 @media (max-width: 1200px) {
   .form-horizontal-group-unique {
     gap: 5px;
@@ -160,6 +246,10 @@ input[disabled] {
 
   .form-group-unique {
     min-width: 100px;
+  }
+
+  .form-group-bordered-unique {
+    grid-template-columns: 1fr 1fr;
   }
 }
 
@@ -173,21 +263,63 @@ input[disabled] {
     margin-top: 10px;
   }
 
+  .contract-form-unique {
+    grid-template-columns: 1fr;
+  }
+
   .form-horizontal-group-unique {
     flex-direction: column;
     gap: 10px;
   }
 
-  .form-group-unique {
-    min-width: 100%;
+  .form-group-bordered-unique {
+    grid-template-columns: 1fr;
   }
 
   .payments-section-unique {
     flex-direction: column;
+    max-height: 100vh; /* Залишає більше простору для мобільних пристроїв */
   }
 
   .payments-left-unique,
   .payments-right-unique {
     width: 100%;
   }
+}
+
+/* Таблиця з інформацією */
+.contract-info-table {
+  margin-top: 5px;
+  width: 100%;
+  font-size: 0.85rem;
+  max-width: 100%;
+  max-height: 100%; /* Гнучка висота для запобігання скролінгу */
+  box-sizing: border-box;
+  overflow: hidden; /* При переповненні, зникнуть зайві елементи */
+}
+
+.table-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 0;
+  border-bottom: 1px solid #ddd;
+  flex-wrap: wrap;
+}
+
+.table-cell {
+  flex: 1;
+  text-align: left;
+  padding: 3px 5px;
+  min-width: 100px;
+  word-wrap: break-word; /* Запобігання виходу тексту за межі */
+}
+
+.table-cell:nth-child(2) {
+  text-align: right;
+  font-weight: bold;
+  padding-right: 10px;
+}
+
+.table-row:last-child {
+  border-bottom: none;
 }
