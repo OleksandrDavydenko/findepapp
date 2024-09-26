@@ -224,10 +224,7 @@ const ContractCard = ({ contract, onSave, onCancel }) => {
   return (
     <div className="contract-card-container-unique">
       <div className="contract-header-unique">
-        <h3>{contract ? 'Редагувати контракт' : 'Новий контракт'}</h3>
-        {contract && (
-          <span className="contract-number-unique">Номер: {contract.number}</span>
-        )}
+        <h3>{contract ? `Контракт № ${watch('number')}` : 'Новий контракт'}</h3>
       </div>
       
 
@@ -236,17 +233,18 @@ const ContractCard = ({ contract, onSave, onCancel }) => {
         <div className="form-horizontal-group-unique">
           <div className="form-group-unique">
             <label>Номер:</label>
-            <input type="text" {...register('number')} readOnly />
+            <input className="number_input" type="text" {...register('number')} readOnly />
           </div>
           <div className="form-group-unique">
             <label>Дата:</label>
             <input type="date" {...register('date', { required: true })} />
           </div>
-          <div className="form-group-unique">
+          <div className="form-group-unique client_input">
             <label>Клієнт:</label>
-            <input type="text" value={selectedClient} readOnly onClick={() => setIsModalOpen(true)} required />
+            <input className="client_input" type="text" value={selectedClient} readOnly onClick={() => setIsModalOpen(true)} required />
           </div>
-        </div>
+          
+      </div>
 
         {/* Тип контракту, курс */}
         <div className="form-horizontal-group-unique">

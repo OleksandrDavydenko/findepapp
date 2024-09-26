@@ -19,34 +19,42 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
   font-size: 1rem;
   font-weight: bold;
   color: #333;
 }
 
+.number_input{
+  background-color:#e0e0e0 !important;
+  color: #888;
+}
+
+.client_input {
+  min-width: 30%;
+}
+
 .contract-number-unique {
   color: #888;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
 }
 
 /* Основна форма */
 .contract-form-unique {
   display: grid;
-  grid-template-columns: 1fr 1fr; /* Дві колонки */
+  grid-template-columns: 1fr 1fr;
   gap: 10px;
   flex-grow: 1;
   overflow-y: auto;
-  width: 100%; /* Забезпечує, що форма не виходить за межі контейнера */
+  width: 100%;
   box-sizing: border-box;
-  max-height: calc(100vh - 150px); /* Максимальна висота для адаптивності */
 }
 
 .form-horizontal-group-unique {
   display: flex;
   justify-content: space-between;
-  gap: 10px;
-  margin-bottom: 10px;
+  gap: 5px;
+  margin-bottom: 8px;
   flex-wrap: wrap;
 }
 
@@ -55,20 +63,20 @@
   display: flex;
   flex-direction: column;
   flex: 1;
-  min-width: 120px;
+
 }
 
 .form-group-unique label {
-  margin-bottom: 5px;
+  margin-bottom: 3px;
   font-weight: bold;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   color: #555;
 }
 
 .form-group-unique input,
 .form-group-unique select {
   width: 100%;
-  padding: 6px;
+
   font-size: 0.85rem;
   border-radius: 4px;
   border: 1px solid #ccc;
@@ -79,14 +87,14 @@
 /* Рамка для реквізитів */
 .form-group-bordered-unique {
   display: grid;
-  grid-template-columns: repeat(4, 1fr); /* Чотири колонки для реквізитів */
+  grid-template-columns: repeat(4, 1fr);
   gap: 10px;
-  padding: 15px;
+  padding: 10px;
   border: 2px solid #ddd;
   border-radius: 5px;
   background-color: #fafafa;
   box-sizing: border-box;
-  width: 100%; /* Забезпечує гнучкість рамки для запобігання горизонтальному скролу */
+  width: 100%;
 }
 
 /* Вирівнювання і розмір валютних полів */
@@ -101,9 +109,7 @@
   margin-bottom: 10px;
 }
 
-.form-group-unique input[type="number"] {
-  max-width: 100px; /* Обмеження ширини для полів з числами */
-}
+
 
 .form-group-unique input:focus,
 .form-group-unique select:focus {
@@ -116,6 +122,7 @@
   color: #888;
 }
 
+
 /* Поля з акцентом */
 .highlight-input {
   border-color: #00aaff;
@@ -123,15 +130,15 @@
 
 /* Дії внизу форми */
 .actions-unique {
-  margin-top: 15px;
+  margin-top: 10px;
   display: flex;
-  gap: 10px;
+  gap: 5px;
   justify-content: flex-end;
 }
 
 .actions-unique button {
-  padding: 8px 16px;
-  font-size: 0.85rem;
+  padding: 6px 12px;
+  font-size: 0.8rem;
   background-color: #00aaff;
   color: white;
   border: none;
@@ -154,17 +161,15 @@
 
 /* Таблиці з платежами */
 .payments-section-unique {
-  margin-top: 20px;
+  margin-top: 15px;
   display: flex;
   justify-content: space-between;
   gap: 10px;
+  overflow: hidden;
   flex-grow: 1;
-  overflow-y: auto; /* Додаємо авто-прокрутку для секцій з платежами */
-  max-height: calc(100vh - 250px); /* Забезпечує адаптивну висоту для скролу */
-  width: 100%;
+  width: 100%; /* Забезпечує, що секція не виходить за межі контейнера */
 }
 
-/* Контейнери для платежів */
 .payments-left-unique,
 .payments-right-unique {
   width: 100%; /* Дозволяє обом частинам займати повну ширину при зумі */
@@ -172,31 +177,36 @@
   overflow-y: auto;
 }
 
+.payments-table-wrapper {
+  max-height: 180px; /* Встановлює мінімум два рядки для відображення */
+  overflow-y: auto;
+  position: relative;
+}
+
 .payments-table-unique {
   width: 100%;
   border-collapse: collapse;
   border: 1px solid #ddd;
   box-sizing: border-box;
-  overflow-y: auto;
-  max-height: 100%;
 }
 
 .payments-table-unique th,
 .payments-table-unique td {
-  padding: 8px;
+  padding: 6px;
   border: 1px solid #ddd;
-  font-size: 0.85rem;
-  max-width: 100%; /* Запобігає виходу за межі сторінки */
+  font-size: 0.8rem;
 }
-
-.payments-table-unique th {
-  background-color: #333;
-  color: #fff;
+.client_input {
+  flex-grow: 3; /* Робить інпут для клієнта найширшим */
 }
 
 .payments-table-unique tr.selected {
   background-color: #00aaff;
   color: white;
+}
+
+.payments-table-unique tr:nth-child(even) {
+  background-color: #f2f2f2;
 }
 
 .payments-table-unique tr:hover {
@@ -207,18 +217,18 @@
 .payment-actions-unique {
   display: flex;
   justify-content: flex-start;
-  gap: 8px;
-  margin-bottom: 8px;
+  gap: 5px;
+  margin-bottom: 5px;
 }
 
 .payment-actions-unique button {
-  padding: 6px 10px;
+  padding: 5px 8px;
   background-color: #007bff;
   border: none;
   color: white;
   cursor: pointer;
   border-radius: 5px;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
 }
 
 .payment-actions-unique button:hover {
@@ -238,15 +248,16 @@
   max-width: 100%;
 }
 
+
+
+
+
 /* Адаптивність */
 @media (max-width: 1200px) {
   .form-horizontal-group-unique {
     gap: 5px;
   }
 
-  .form-group-unique {
-    min-width: 100px;
-  }
 
   .form-group-bordered-unique {
     grid-template-columns: 1fr 1fr;
@@ -278,7 +289,6 @@
 
   .payments-section-unique {
     flex-direction: column;
-    max-height: 100vh; /* Залишає більше простору для мобільних пристроїв */
   }
 
   .payments-left-unique,
@@ -291,17 +301,15 @@
 .contract-info-table {
   margin-top: 5px;
   width: 100%;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   max-width: 100%;
-  max-height: 100%; /* Гнучка висота для запобігання скролінгу */
   box-sizing: border-box;
-  overflow: hidden; /* При переповненні, зникнуть зайві елементи */
 }
 
 .table-row {
   display: flex;
   justify-content: space-between;
-  padding: 5px 0;
+  padding: 1px 0;
   border-bottom: 1px solid #ddd;
   flex-wrap: wrap;
 }
@@ -310,16 +318,140 @@
   flex: 1;
   text-align: left;
   padding: 3px 5px;
-  min-width: 100px;
-  word-wrap: break-word; /* Запобігання виходу тексту за межі */
+  min-width: 80px;
 }
 
 .table-cell:nth-child(2) {
   text-align: right;
   font-weight: bold;
-  padding-right: 10px;
+  padding-right: 8px;
 }
 
 .table-row:last-child {
   border-bottom: none;
+}
+
+
+
+
+
+
+
+
+
+
+/* Основний стиль для таблиці */
+/* Основний стиль для таблиці */
+.payments-table-unique {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #ccc;
+  font-size: 0.85rem;
+  box-sizing: border-box;
+}
+
+/* Стиль для заголовка таблиці */
+.payments-table-unique th {
+  background-color: #f0f0f0;
+  border-bottom: 2px solid #ddd;
+  text-align: left;
+  padding: 5px;
+  font-weight: bold;
+  color: #333; /* Темніший текст для кращого контрасту */
+  white-space: nowrap; /* Забезпечує, що заголовки не розтягуються */
+}
+
+/* Стиль для рядків таблиці */
+.payments-table-unique td {
+  padding: 5px;
+  border-bottom: 1px solid #ddd;
+  text-align: left;
+  white-space: nowrap; /* Зберігає дані в одному рядку */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #333; /* Зробити текст темнішим */
+}
+
+/* Чередування кольорів для рядків */
+.payments-table-unique tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.payments-table-unique tr:nth-child(odd) {
+  background-color: #e0f7fa;
+}
+
+/* Стиль для виділених рядків */
+.payments-table-unique tr.selected {
+  background-color: #a0d6ff; /* Світліший блакитний для виділення */
+  color: white;
+}
+
+/* Стиль для рядків при наведенні */
+.payments-table-unique tr:hover {
+  background-color: #cfeaff; /* Світло-блакитний для наведених рядків */
+  color: black; /* Зберігаємо чорний текст для кращого читання */
+  cursor: pointer;
+}
+
+/* Вирівнювання тексту в комірках */
+.payments-table-unique td,
+.payments-table-unique th {
+  text-align: left;
+}
+
+/* Стиль для чекбокса у колонці зі статусом */
+.payment-status-cell {
+  text-align: center;
+}
+
+.payment-status-cell input {
+  cursor: pointer;
+}
+
+/* Стиль для кнопок дій */
+.payment-actions-unique {
+  display: flex;
+  justify-content: flex-start;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.payment-actions-unique button {
+  padding: 8px 12px;
+  background-color: #007bff;
+  border: none;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: background-color 0.3s;
+}
+
+.payment-actions-unique button:hover {
+  background-color: #0056b3;
+}
+
+.payment-actions-unique button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+/* Фіксація шапки таблиці */
+.payments-table-wrapper {
+  max-height: 200px;
+  overflow-y: auto;
+  position: relative;
+}
+
+/* .payments-table-unique th {
+  position: sticky;
+  top: 0;
+  background-color: #f0f0f0;
+  z-index: 1;
+} */
+
+/* Вирівнювання комірок з числовими значеннями */
+.payments-table-unique .numeric-cell {
+  text-align: right;
 }
