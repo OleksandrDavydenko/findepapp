@@ -1,6 +1,7 @@
 /* Контейнер для всього контенту документів */
 .documents-container {
-    padding: 20px;
+    width: 100%;
+    padding: 25px;
     position: relative; /* Встановлюємо відносне позиціонування для контейнера */
   }
   

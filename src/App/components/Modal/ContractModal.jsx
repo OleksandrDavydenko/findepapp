@@ -39,7 +39,7 @@ const ContractModal = ({ onClose, onSelect }) => {
           onChange={(e) => setSearchTerm(e.target.value)}
           className="modal-search-input"
         />
-        <div className="table-container">
+        <div className="table-container modal">
           <table className="list-table">
             <thead>
               <tr>

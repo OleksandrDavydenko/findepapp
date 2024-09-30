@@ -1,4 +1,13 @@
-/* src/components/Home/home.css */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+}
 
 .home-container {
   display: flex;
@@ -12,12 +21,20 @@
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 2px solid #ccc;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  height: 60px;
 }
 
 .header-content {
   display: flex;
   align-items: center;
+  width: 100%;
+  justify-content: space-between;
 }
 
 .user-info {
@@ -26,13 +43,14 @@
 }
 
 .logout-button {
-  width: 35%;
   background-color: #ff4d4d;
   color: white;
   border: none;
   padding: 8px 16px;
   border-radius: 5px;
   cursor: pointer;
+  width: auto;
+  white-space: nowrap;
 }
 
 .logout-button:hover {
@@ -41,19 +59,35 @@
 
 .main-content {
   display: flex;
-  flex: 1;
+  justify-content: center;
+  padding-top: 60px; /* Висота хедера */
 }
-
+.logo-conteiner{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
 .sidebar {
   width: 200px;
   background-color: #333;
   color: white;
-  padding: 15px;
+  border-right: 2px solid #ccc;
+  padding: 15px; /* Встановлюємо padding на 0 */
+  position: fixed;
+  top: 60px; /* Щоб sidebar не заходив під хедер */
+  bottom: 0;
+  left: 0;
+}
+
+.logo {
+  height: 90px; /* Встановіть бажану висоту логотипу */
+  margin-right: 20px; /* Додайте відступ праворуч від логотипу */
 }
 
 .sidebar ul {
   list-style: none;
   padding: 0;
+  margin: 0;
 }
 
 .sidebar ul li {
@@ -67,6 +101,6 @@
 }
 
 .content {
-  flex: 1;
-  padding: 20px;
+  width: 100%;
+  margin-left: 200px;
 }

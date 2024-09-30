@@ -2,6 +2,7 @@
 
 /* Контейнер для всього контенту довідників */
 .directories-container {
+    width: 100%;
     padding: 20px;
     position: relative; /* Встановлюємо відносне позиціонування для контейнера */
   }
@@ -15,7 +16,7 @@
     border-radius: 5px;
     cursor: pointer;
     position: absolute; /* Фіксуємо кнопку у верхньому лівому куті */
-    top: 10px;
+    top: 5px;
     left: 10px;
     z-index: 10; /* Забезпечуємо, що кнопка не буде перекриватися іншими елементами */
   }

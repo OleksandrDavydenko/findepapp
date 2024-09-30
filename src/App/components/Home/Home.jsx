@@ -7,6 +7,7 @@ import Reporting from '../Reporting/Reporting';
 import Directories from '../Directories/Directories'; // Імпортуємо новий компонент "Довідники"
 import './home.css'; // Додаємо файл стилів для цього компонента
 
+
 const Home = () => {
   const { currentUser, logout } = useAuth();
   const [selectedComponent, setSelectedComponent] = useState('Issuance');
@@ -44,10 +45,17 @@ const Home = () => {
     <div className="home-container">
       <header className="header">
         <div className="header-content">
-          <span className="user-info"> {currentUser?.email}</span>
-          <button onClick={logout} className="logout-button">
-            Вийти
-          </button>
+          <div className='logo-conteiner'>
+            <img  src='../../../../public/logo.png' alt="Logo" class="logo"/>
+            <h3 className="user-info"> FinDepartment</h3>
+          </div>
+          <div>
+            <span className="user-info"> {currentUser?.email}</span>
+            <button onClick={logout} className="logout-button">
+              Вийти
+            </button>
+          </div>
+
         </div>
       </header>
       <div className="main-content">

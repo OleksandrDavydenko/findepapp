@@ -2,16 +2,19 @@
 .contract-card-container-unique {
   padding: 15px;
   height: 100%;
-  max-height: calc(100vh - 180px);
+  /* max-height: 100vh; */ /* calc(100vh - 180px) */;
+  max-width: 130vh;
   display: flex;
   flex-direction: column;
   overflow: hidden;
   font-size: 0.85rem;
   background-color: #fff;
   border-radius: 8px;
+  background-color: #F0F0F1;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   box-sizing: border-box; /* Включає padding та border в розміри */
   width: 100%; /* Забезпечує, що контейнер не вийде за межі сторінки */
+  margin: 0 auto;
 }
 
 /* Заголовок контракту */
@@ -130,7 +133,7 @@
 
 /* Дії внизу форми */
 .actions-unique {
-  margin-top: 10px;
+  margin-top: 20px;
   display: flex;
   gap: 5px;
   justify-content: flex-end;
@@ -145,6 +148,7 @@
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s;
+
 }
 
 .actions-unique button:hover {
@@ -161,7 +165,7 @@
 
 /* Таблиці з платежами */
 .payments-section-unique {
-  margin-top: 15px;
+  margin-top: 5%;
   display: flex;
   justify-content: space-between;
   gap: 10px;
@@ -219,6 +223,7 @@
   justify-content: flex-start;
   gap: 5px;
   margin-bottom: 5px;
+  margin-top: 10px;
 }
 
 .payment-actions-unique button {
@@ -244,7 +249,7 @@
   border: none;
   height: 2px;
   background-color: #333;
-  margin: 10px 0;
+  margin: 20px 0;
   max-width: 100%;
 }
 

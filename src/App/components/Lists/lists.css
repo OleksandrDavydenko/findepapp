@@ -29,7 +29,7 @@
 .search-input {
   padding: 8px;
   width: 100%;
-  max-width: 300px;
+  max-width: calc(100hv - 300px);
   margin-bottom: 15px;
   border: 1px solid #ccc;
   border-radius: 5px;

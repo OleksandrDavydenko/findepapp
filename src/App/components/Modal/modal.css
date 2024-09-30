@@ -27,9 +27,12 @@
   }
   
   .table-container {
-    max-height: 300px;
+    
     overflow-y: auto;
     margin-bottom: 15px;
+  }
+  .modal {
+    max-height: 300px;
   }
   
   .list-table {
